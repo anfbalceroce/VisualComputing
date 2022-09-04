@@ -1,7 +1,5 @@
 # Ilusiones
 
-Test
-
 ## Steping Illusion
 
 {{< p5-iframe sketch="/VisualComputing/sketches/steps.js" width="420" height="325">}}
