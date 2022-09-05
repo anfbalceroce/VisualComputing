@@ -4,11 +4,10 @@ Aquí se presentan cada una de las ilusiones con sus respectivas explicaciones s
 
 ## Steping Illusion
 > <p>En esta ilusion se observan dos rectangulos de color amarillo y azul que se desplazan a lo largo de un patron de barras claras y oscuras. Cuando las condiciones de color y tamaño son adecuadas los rectangulos parecen moverse de manera intermitente, como si fueran pies caminando.</p><p>Cuando el pie amarillo tiene un brillo similar a las barras claras, y el pie azul un brillo similar a las barras oscuras (caso extremo cuando son del mismo color y suficiente contraste entre los claros y los oscuros) solo hay evidencia clara de movimiento cuando los extremos del rectangulo claro pasan sobre una barra oscura o los del rectangulo oscuro pasan sobre una barra clara, efectivamente la mitad del espacio. En la otra mitad no (claro en claro o  oscuro en oscuro) no es evidente el movimiento por lo que el cerebro asume que no hay movimiento (por defecto si algo no está en movimiento, entonces está en reposo).</p><p>Este fenómeno también explica otra posible ilusión, que no se vean los rectángulos caminando si no oscilando, como un gusano. Esto se logra cuando la razón entre el largo del rectángulo y el ancho de las barras es un número impar (un número par causa la ilusión de caminar).</p>
->
+
 {{< p5-iframe sketch="/VisualComputing/sketches/steps.js" width="470" height="403">}}
 
 ## Complementary Colors
-
 >Existe algo llamado **"imagen remanente retiniana negativa"**. Se vuelve visible cuando un tono determinado permanece en la misma posición de la retina durante varios segundos (por lo general, moveríamos los ojos 3 veces por segundo, por lo que esto no es una desventaja en la visualización normal). La imagen remanente se acumula a medida que esa ubicación retiniana se adapta a este tono especial, y al mirar un fondo neutro se ve el color complementario. Investigaciones recientes han localizado de manera convincente las células ganglionares de la retina como sustrato neural para la imagen residual (Zaidi et al. 2012).
 
 >Esto es algo bueno, normalmente, porque ayuda a la **"constancia del color"**, es decir, vemos colores algo independientes de la iluminación ambiental (compare el sol glaciar azulado del mediodía con un tinte rojizo en la sala de estar junto a la chimenea).
@@ -42,5 +41,5 @@ Aquí se presentan cada una de las ilusiones con sus respectivas explicaciones s
 
 ## Moving Dots
 > El efecto consiste en una **ilusión de movimiento**, debido a que cada círculo contiene dos arcos de colores similares en  movimiento de traslación sobre el mismo círculo, el ojo, al fijar su visión central solo en un punto o zona de toda la imagen, provoca que la visión periférica al captar el resto de la imagen, se dé un efecto de movimiento sobre los círculos, como si estuvieran bailando y moviéndose en forma de onda, a pesar de que el círculo central se encuentre **siempre sin moverse**, esto debido al movimiento contrario entre ambos arcos y que esten colocados de tal modo
->
+
 {{< p5-iframe sketch="/VisualComputing/sketches/illusion-moving-dots.js" width="720" height="723">}}

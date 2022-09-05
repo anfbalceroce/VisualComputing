@@ -1,14 +1,32 @@
 let colors = [];
+let maincolor
 let flag = false;
+
+let select
 
 function setup() {
   createCanvas(500, 500);
   angleMode(DEGREES);
   
-  colors = [color('magenta'), color('magenta'), color('magenta'),
-            color('magenta'), color('magenta'), color('magenta'),
-            color('magenta'), color('magenta'), color('magenta'),
-            color('magenta'), color('magenta'), color('magenta')]
+  select = createSelect();
+  select.option('magenta');
+  select.option('yellow');
+  select.option('cyan');
+  select.option('red');
+  select.option('blue');
+  select.option('green');
+  select.option(color(255, 216, 255)); /* magenta with 15% saturation */
+  select.option(color(255, 255, 216)); /* yellow with 15% saturation */
+  select.option(color(216, 255, 255)); /* cyan with 15% saturation */
+  select.changed(selectEvent);
+  
+  maincolor = select.value()
+  
+  colors = [color(maincolor), color(maincolor), color(maincolor),
+            color(maincolor), color(maincolor), color(maincolor),
+            color(maincolor), color(maincolor), color(maincolor),
+            color(maincolor), color(maincolor), color(maincolor)]
+
   
 }
 
@@ -86,12 +104,16 @@ async function go() {
     for (let i = 0; i < colors.length; i++) {
       await sleep(200); 
       if (i == 0)
-        colors[colors.length - 1] = color('magenta');  
+        colors[colors.length - 1] = color(maincolor);  
       else
-        colors[i-1] = color('magenta'); 
+        colors[i-1] = color(maincolor); 
       colors[i] = color(240); 
     } 
     flag = false;
+}
+
+function selectEvent() {
+  maincolor = select.value()
 }
 
 function sleep(ms) {
