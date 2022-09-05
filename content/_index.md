@@ -7,7 +7,9 @@ type: docs
 ## **Group Members Ingeneria de Sistemas y computaciòn**
 
 > **Andres Felipe Balcero Ceron (anfbalceroce)**
->
+>>**Intereses:** Videojuegos, ciencias naturales, ciencias de la computación y tecnología (Hardware).
+>>
+>>**Pasatiempos:** Usualmente estoy jugando videojuegos (especialmente RPG, simulación ó estrategia), viendo videos o streams en YouTube/Twitch, o las dos al mismo tiempo. También me gusta leer manga y novelas.
 
 > **Diego Esteban Quintero Rey (este6an13)**
 >
