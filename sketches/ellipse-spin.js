@@ -1,7 +1,7 @@
 let angle = 0;
 
 function setup() {
-  createCanvas(700, 700);
+  createCanvas(500, 500);
   strokeWeight(4);
 }
 
