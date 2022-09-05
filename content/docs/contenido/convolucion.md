@@ -1,7 +1,7 @@
 # Convolución
 <iframe src="/VisualComputing/kernels.html" style="border:none;width:100%;height:1000px;"></iframe>
 
-# Explicasión
+# Explicación
 
 __1. Identity:__ La mascara retorna la misma imagen
 {{< katex >}}
@@ -86,6 +86,7 @@ __8. Outline:__
 \end{bmatrix}
 {{< /katex >}}
 
+```html
 <img hidden id="uploaded-image" src=""></img> <!--imagen subida, de ella se obtiene la representación binaria que luego es usada por el canvas para obtener la representación en RGBA -->
 <canvas hidden id="canvas-for-rgba"></canvas> <!-- canvas solo para dibujar la imagen subida y obtener la representación en RGBA, por eso puede ser oculta -->
 
