@@ -18,7 +18,7 @@ Aquí se presentan cada una de las ilusiones con sus respectivas explicaciones s
 
 >Además, un **efecto Gestalt**, aquí entra en juego el **"fenómeno phi"**: la imagen residual de las sucesivas ubicaciones retinianas se integra y se percibe como un solo objeto en movimiento, a saber, el disco verde.
 
-{{< p5-iframe sketch="/VisualComputing/sketches/illusion-complementary-colors.js" width="520" height="525">}}
+{{< p5-iframe sketch="/VisualComputing/sketches/illusion-complementary-colors.js" width="520" height="542">}}
 
 >En resumen, los siguientes factores hacen que esta ilusión sea bastante convincente:
 >
