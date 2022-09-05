@@ -1,17 +1,20 @@
+<img hidden id="uploaded-image" src=""></img> <!--imagen subida, de ella se obtiene la representación binaria que luego es usada por el canvas para obtener la representación en RGBA -->
+<canvas hidden id="canvas-for-rgba"></canvas> <!-- canvas solo para dibujar la imagen subida y obtener la representación en RGBA, por eso puede ser oculta -->
+
 <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg">
 
 <select id="kernel-select">
-    <option selected value="gaussian-blur">Gaussian Blur</option>
+    <option selected value="identity">Identity</option>
+    <option value="gaussian-blur">Gaussian Blur</option>
     <option value="sharpen">Sharpen</option>
     <option value="outline">Outline</option>
+    <option value="emboss">Emboss</option>
     <option value="left-sobel">Left Sobel</option>
-    <!--solo funciona gaussian blur (notorio con imagenes muy pequeñas) y sharpen-->
-    <!--outline y left sobel no funcionan porque la suma de los pesos da cero ... ¿cómo se de debe implementar entonces?-->
-    <!--agregar otros kernels-->
+    <option value="right-sobel">Right Sobel</option>
+    <option value="top-sobel">Top Sobel</option>
+    <option value="bottom-sobel">Bottom Sobel</option>
 </select>
 
-<img id="uploaded-image" src=""></img> <!--imagen subida, de ella se obtiene la representación binaria que luego es usada por el canvas para obtener la representación en RGBA -->
-<canvas hidden id="canvas-for-rgba"></canvas> <!-- canvas solo para dibujar la imagen subida y obtener la representación en RGBA, por eso puede ser oculta -->
 <canvas id="transformed-image-canvas"></canvas>
 
 <script>
@@ -41,7 +44,7 @@
             let nbs = neighbours(i, pos, width)
             let ws = weights(ker, pos)
 
-            let sum = ws.reduce((partialSum, a) => partialSum + a, 0); // cuando esto es cero, hay error, ¿cómo se debe implementar cuando la suma de los pesos es cero?
+            let sum = ws.reduce((partialSum, a) => partialSum + a, 0); // en la matriz se debe garantizar que la suma de los pesos no sea cero para que funcione
             
             let rtotal = 0
             let gtotal = 0
@@ -210,28 +213,44 @@
         return nbs
     }
 
-    // kernels disponibles: cada matriz es una matriz de pesos, pero hay error cuando estos suman cero ...
+    // kernels disponibles: cada matriz es una matriz de pesos
     let kernel = (kernel) => {
-        if (kernel == 'gaussian-blur')
+        if (kernel == 'identity')
+            return [0, 0, 0, 
+                    0, 1, 0,
+                    0, 0, 0]
+        else if (kernel == 'gaussian-blur')
             return [1, 2, 1, 
-                    2, 4, 2,
+                    2, 4, 1,
                     1, 2, 1]
         else if (kernel == 'emboss')
             return [-2, -1, 0, 
-                    -1, 1, 1,
+                    -1, 2, 1,
                     0, 1, 2]
         else if (kernel == 'left-sobel')
             return [1, 0, -1, 
-                    2, 0, -2,
+                    2, 1, -2,
                     1, 0, -1]
+        else if (kernel == 'right-sobel')
+            return [-1, 0, 1, 
+                    -2, 1, 2, // se agregó 1 en la posición central para garantizar que suma de pesos no sea cero
+                    -1, 0, 1]
+        else if (kernel == 'top-sobel')
+            return [1, 2, 1, 
+                    0, 1, 0,
+                    -1, -2, -1]
+        else if (kernel == 'bottom-sobel')
+            return [-1, -2, -1, 
+                    0, 1, 0,
+                    1, 2, 1]
         else if (kernel == 'sharpen')
             return [0, -1, 0, 
                     -1, 5, -1,
                     0, -1, 0]
         else if (kernel == 'outline')
-            return [1, 1, 1, 
-                    1, 8, 1,
-                    1, 1, 1]
+            return [-1, -1, -1, 
+                    -1, 9, -1,
+                    -1, 1, -1]
         else
             return []
     }
