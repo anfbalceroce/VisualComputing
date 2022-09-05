@@ -8,9 +8,30 @@ Aquí se presentan cada una de las ilusiones con sus respectivas explicaciones s
 {{< p5-iframe sketch="/VisualComputing/sketches/steps.js" width="470" height="403">}}
 
 ## Complementary Colors
-> Explicación
->
+
+>Existe algo llamado **"imagen remanente retiniana negativa"**. Se vuelve visible cuando un tono determinado permanece en la misma posición de la retina durante varios segundos (por lo general, moveríamos los ojos 3 veces por segundo, por lo que esto no es una desventaja en la visualización normal). La imagen remanente se acumula a medida que esa ubicación retiniana se adapta a este tono especial, y al mirar un fondo neutro se ve el color complementario. Investigaciones recientes han localizado de manera convincente las células ganglionares de la retina como sustrato neural para la imagen residual (Zaidi et al. 2012).
+
+>Esto es algo bueno, normalmente, porque ayuda a la **"constancia del color"**, es decir, vemos colores algo independientes de la iluminación ambiental (compare el sol glaciar azulado del mediodía con un tinte rojizo en la sala de estar junto a la chimenea).
+
+>Entonces la imagen residual está "grabada", lo que significa que la ubicación de la retina está adaptada. Ahora el parche magenta cambia repentinamente a gris. Por la adaptación, ahora se ve el color complementario, que sería el verde para el magenta, o el gris claro para un gris oscuro.
+
+>La imagen residual de la retina generalmente se desvanece rápidamente (en unos pocos segundos en condiciones normales). Pero aquí este desvanecimiento no reduce la percepción de la imagen remanente, porque se descubre una nueva justo después en la siguiente ubicación.
+
+>Además, un **efecto Gestalt**, aquí entra en juego el **"fenómeno phi"**: la imagen residual de las sucesivas ubicaciones retinianas se integra y se percibe como un solo objeto en movimiento, a saber, el disco verde.
+
 {{< p5-iframe sketch="/VisualComputing/sketches/illusion-complementary-colors.js" width="520" height="525">}}
+
+>En resumen, los siguientes factores hacen que esta ilusión sea bastante convincente:
+>
+>* Es bastante fácil fijarse constantemente en el centro
+>
+>* La mayoría de las veces, las ubicaciones de la retina se readaptan y la imagen remanente se descubre solo brevemente
+>
+>* Un efecto Gestalt conduce a la percepción de un disco verde volador.
+>
+
+>Tomado de <https://michaelbach.de/ot/col-lilacChaser/index.html>
+
 
 ## Spinning Ellipses
 > El efecto consiste en una **ilusión de movimiento**, dado que es una serie de elipses que gira respecto a otro a una razón de 0.003 grados se crea un "puente" entre elipses, que a su vez crea un arco con el borde exterior de los elipses conectados subsecuentemente, mirando el punto central se puede ver como se crean dos patrones de espiral, lo que a su vez al estar rotando da esta espiral "hipnótica".
