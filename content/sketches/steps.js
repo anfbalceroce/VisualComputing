@@ -63,8 +63,8 @@ function draw() {
     rect(i,0,barWidth,(height-80));
   }
 
-  stroke(60,100,95);
-  fill(60,100,95);
+  stroke(60,100,100);
+  fill(60,100,100);
   rect(x,(0.5*(height-80))-feetHeight-0.5*feetDistance,feetWidth,feetHeight);
 
   stroke(240,100,40);
