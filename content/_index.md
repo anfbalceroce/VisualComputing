@@ -7,9 +7,16 @@ type: docs
 ## **Group Members Ingeneria de Sistemas y computaciòn**
 
 > **Andres Felipe Balcero Ceron (anfbalceroce)**
+>>**Intereses:**
+>>
+>>**Pasatiempos:** 
 >
 
+
 > **Diego Esteban Quintero Rey (este6an13)**
+>>**Intereses:** Computación teórica, matemáticas y arquitectura de software
+>>
+>>**Pasatiempos:** Me gusta leer y consumir contenido sobre temas de computación, matemáticas, física y filosofía. Disfruto salir a caminar y tomar fotografías. Entre mis géneros de música favoritos están el rock, el pop en inglés, la música cubana y la música brasileña (MPB, bossa nova, ...).
 >
 
 >**Harol Yesid Achagua Clavijo (hyachaguac)**
@@ -19,9 +26,14 @@ type: docs
 >
 
 >**Javier Esteban Pacavita Galindo (JEPG-maker)**
+>>**Intereses:** Desarrollo de software (Frontend), inteligencia artificial y blockchain
+>>
+>>**Pasatiempos:** Me gustan los videojuegos (en general de todo tipo mientras no sean P2W), la música electrónica y cualquier cosa sea serie, pelicula, libro o una historia, mientras sea buena.
 >
+
 
 > **Julián Steven Vega Daza (Julian-Vega-UNAL)**
 >>**Intereses:** Desarrollo de software (Frontend), diseño de videojuegos y Hardware
 >>
 >>**Pasatiempos:** Me gusta jugar videojuegos, especialmente el buen lolsito y juegos Hack and slash, me gusta tambien la lectura, sobre todo leer ciencia ficción y mitología de varias culturas, a su vez, me gusta las series de tv, me gusta diferentes generos de musica pero tengo preferencia al rock
+>
