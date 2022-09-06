@@ -86,13 +86,54 @@ __8. Outline:__
 \end{bmatrix}
 {{< /katex >}}
 
+
+# Lightness
+
+Se utilizaron las siguientes ecuaciones para calcular la constante por la cual se multiplicó el calor de cada pixel.
+
+**HSI**
+
+{{< katex >}}
+
+L = \frac{1}{3}\times(cR + cG + cB) \to c = \frac{3L}{(R + G + B)}
+
+{{< /katex >}}
+
+**HSV**
+
+{{< katex >}}
+
+L = \max(cR, cG, cB) \to c = \frac{L}{\max(R, G, B)}
+
+{{< /katex >}}
+
+**HSL**
+
+{{< katex >}}
+
+L = \frac{1}{2}\times(\max(cR, cG, cB) + \min(cR, cG, cB)) \to c = \frac{2L}{\max(R, G, B) + \min(R, G, B)}
+
+{{< /katex >}}
+
+**Luma (601)**
+
+{{< katex >}}
+
+L = 0.2989cR + 0.5870cG + 0.1140cB \to c = \frac{L}{0.2989R + 0.5870G + 0.1140B}
+
+{{< /katex >}}
+
+
+# Código
+<details>
+
 ```html
-<img hidden id="uploaded-image" src=""></img> <!--imagen subida, de ella se obtiene la representación binaria que luego es usada por el canvas para obtener la representación en RGBA -->
+<img hidden id="uploaded-image" src="" /> <!--imagen subida, de ella se obtiene la representación binaria que luego es usada por el canvas para obtener la representación en RGBA -->
 <canvas hidden id="canvas-for-rgba"></canvas> <!-- canvas solo para dibujar la imagen subida y obtener la representación en RGBA, por eso puede ser oculta -->
 
 <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg">
 
-<select id="kernel-select">
+Kernel: <select id="kernel-select">
     <option selected value="identity">Identity</option>
     <option value="gaussian-blur">Gaussian Blur</option>
     <option value="sharpen">Sharpen</option>
@@ -104,9 +145,104 @@ __8. Outline:__
     <option value="bottom-sobel">Bottom Sobel</option>
 </select>
 
+<input hidden id="lightness-input" type="number" placeholder="Lightness"></input>
+<select hidden id="lightness-definition-select">
+    <option selected value="HSI">HSI</option>
+    <option value="HSV">HSV</option>
+    <option value="HSL">HSL</option>
+    <option value="Luma 601">Luma 601</option>
+    <option value="Luma 240">Luma 240</option>
+    <option value="Luma 709">Luma 709</option>
+    <option value="Luma 2020">Luma 2020</option>
+</select>
+
 <canvas id="transformed-image-canvas"></canvas>
 
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- Create a div where the graph will take place -->
+<div id="red-histogram"></div>
+<div id="green-histogram"></div>
+<div id="blue-histogram"></div>
+
 <script>
+
+    function bound(color) {
+        if (color > 255)
+            return 255
+        else if (color < 0)
+            return 0
+        return color
+    }
+
+
+    function applyLightness(image, width, height) {
+
+        let L = document.querySelector('#lightness-input').value
+
+        if (L == '')
+            return;
+
+        let canvas = document.querySelector("#canvas-for-rgba");
+        canvas.width = width;
+        canvas.height = height;
+
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(image, 0, 0);
+        var data = ctx.getImageData(0, 0, width, height).data;  
+        
+        lightness_data = []
+
+        let R_array = []
+        let G_array = []
+        let B_array = []
+
+        let def = document.querySelector('#lightness-definition-select').value
+
+        for (let i = 0; i < data.length; i += 4) {
+
+            let r = data[i];
+            let g = data[i + 1];
+            let b = data[i + 2];
+            let a = data[i + 3];
+            
+            let c = constant(L, r, g, b, def)
+            
+            let cr = c * r
+            let cg = c * g
+            let cb = c * b
+
+            let R = bound(Math.round(cr))
+            let G = bound(Math.round(cg))
+            let B = bound(Math.round(cb))
+            let A = a
+
+            R_array.push(R)   
+            G_array.push(G)   
+            B_array.push(B)    
+            
+            lightness_data.push(R)
+            lightness_data.push(G)
+            lightness_data.push(B)
+            lightness_data.push(A)
+
+        }
+
+        canvas = document.querySelector("#transformed-image-canvas");
+        canvas.width = width;
+        canvas.height = height;
+
+        ctx = canvas.getContext("2d");
+
+        var imageData = canvas.getContext('2d').createImageData(width, height);
+        imageData.data.set(lightness_data);
+        ctx.putImageData(imageData, 0, 0)
+
+        drawHistogram(R_array, 'red');
+        drawHistogram(G_array, 'green');
+        drawHistogram(B_array, 'blue');
+    }
 
     // función de procesamiento de la imagen
     function processImage(image, width, height) {
@@ -121,6 +257,10 @@ __8. Outline:__
         transformed_data = [] // es el arreglo transformado o procesado
 
         let ker = kernel(document.querySelector('#kernel-select').value) // kernel a usar
+
+        let R_array = []
+        let G_array = []
+        let B_array = []
 
         for (let i = 0; i < data.length; i += 4) { // se itera de 4, i corresponde al valor R del pixel i-ésimo de la imagen
 
@@ -154,6 +294,10 @@ __8. Outline:__
             let B = Math.round(btotal / sum)
             let A = Math.round(atotal / sum)
 
+            R_array.push(R)   
+            G_array.push(G)   
+            B_array.push(B)           
+
             // se agregan los nuevos valores al arreglo transformado
             transformed_data.push(R)
             transformed_data.push(G)
@@ -172,6 +316,10 @@ __8. Outline:__
         var imageData = canvas.getContext('2d').createImageData(width, height);
         imageData.data.set(transformed_data);
         ctx.putImageData(imageData, 0, 0)
+
+        drawHistogram(R_array, 'red');
+        drawHistogram(G_array, 'green');
+        drawHistogram(B_array, 'blue');
     }
 
     // se procesa imagen cuando se sube archivo
@@ -196,6 +344,9 @@ __8. Outline:__
 
                 processImage(image, width, height)
 
+                document.querySelector('#lightness-input').removeAttribute("hidden"); 
+                document.querySelector('#lightness-definition-select').removeAttribute('hidden')
+
             };
         };
     });
@@ -212,10 +363,41 @@ __8. Outline:__
 
         let width = img.width
         let height = img.height
-        
-        console.log(image.src)
 
         processImage(image, width, height)
+    });
+
+    // se procesa imagen cuando se cambia el valor del select kernel
+    const lightness_input = document.querySelector("#lightness-input");
+    lightness_input.addEventListener("change", function() {
+
+        const image = new Image();
+            
+        let img = document.querySelector("#uploaded-image")
+        
+        image.src = img.src;
+
+        let width = img.width
+        let height = img.height
+
+        applyLightness(image, width, height)
+    });
+
+
+    // se procesa imagen cuando se cambia el valor del select kernel
+    const lightness_definition_select = document.querySelector("#lightness-definition-select");
+    lightness_definition_select.addEventListener("change", function() {
+
+        const image = new Image();
+            
+        let img = document.querySelector("#uploaded-image")
+        
+        image.src = img.src;
+
+        let width = img.width
+        let height = img.height
+
+        applyLightness(image, width, height)
     });
 
 
@@ -358,6 +540,97 @@ __8. Outline:__
         return ws
     }
 
+    let constant = (L, R, G, B, definition) => {
+        if (definition == 'HSI')
+            return 3 * (L / (R + G + B))
+        else if (definition == 'HSV')
+            return L / Math.max(R, G, B)
+        else if (definition == 'HSL')
+            return  2 * (L / (Math.min(R, G, B) + Math.max(R, G, B)))
+        else if (definition == 'Luma 601')
+            return L / (0.2989 * R + 0.5870 * G + 0.1140 * B)
+        else if (definition == 'Luma 240')
+            return L / (0.212 * R + 0.701 * G + 0.087 * B)
+        else if (definition == 'Luma 709')
+            return L / (0.2126 * R + 0.7152 * G + 0.0722 * B)
+        else if (definition == 'Luma 2020')
+            return L / (0.2627 * R + 0.6780 * G + 0.0593 * B)
+        else
+            return 1   
+    }
+
+    function drawHistogram(data, color) {
+
+        let colors = {
+            'red': '#FF0000',
+            'green': '#00FF00',
+            'blue': '#0000FF'
+        }
+
+        var domain  = [0, 255]
+
+        var margin = { top: 30, right: 30, bottom: 30, left: 50 },
+            width = 460 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
+
+        var x = d3
+            .scaleLinear()
+            .domain(domain)
+            .range([0, width]);
+
+        var histogram = d3
+            .histogram()
+            .domain(x.domain())
+            .thresholds(x.ticks(256)); 
+
+        var bins = histogram(data);
+
+        d3
+            .select(`#${color}-histogram svg`).remove()
+
+        var svg = d3
+            .select(`#${color}-histogram`)
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        svg
+            .append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+
+        var y = d3
+            .scaleLinear()
+            .range([height, 0])
+            .domain([
+                0,
+                d3.max(bins, function(d) {
+                return d.length;
+                })
+            ]);
+
+        svg.append("g").call(d3.axisLeft(y));
+
+        svg
+            .selectAll("rect")
+            .data(bins)
+            .enter()
+            .append("rect")
+            .attr("x", 1)
+            .attr("transform", function(d) {
+                return "translate(" + x(d.x0) + "," + y(d.length) + ")";
+            })
+            .attr("width", function(d) {
+                return x(d.x1) - x(d.x0) - 1;
+            })
+            .attr("height", function(d) {
+                return height - y(d.length);
+            })
+            .style("fill", colors[color]);
+
+    }
 </script>
 
 ```
