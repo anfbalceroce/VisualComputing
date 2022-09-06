@@ -1,90 +1,125 @@
-# Convolución
-<iframe src="/VisualComputing/kernels.html" style="border:none;width:100%;height:1000px;"></iframe>
+# Marco Teorico 
 
-# Explicación
+## Convolusiòn
 
 __1. Identity:__ La mascara retorna la misma imagen
-{{< katex >}}
+
+{{< katex display>}}
+
 \begin{bmatrix}
 0 & 0 & 0\\
 0 & 1 & 0\\
 0 & 0 & 0
 \end{bmatrix}
+
 {{< /katex >}}
 
 __2. Sharpen:__ El núcleo de nitidez enfatiza las diferencias en los valores de píxeles adyacentes, lo que hace que la imagen parezca más vívida.
-{{< katex >}}
+
+{{< katex display>}}
+
 \begin{bmatrix}
 0 & -1 & 0\\
 -1 & 5 & -1\\
 0 & -1 & 0
 \end{bmatrix}
+
 {{< /katex >}}
 
 __3. Emboss:__ Es una técnica de gráficos por computadora en la que cada píxel de una imagen se reemplaza por un resaltado o una sombra, según los límites claros/oscuros de la imagen original. Las áreas de bajo contraste se reemplazan por un fondo gris
-{{< katex >}}
+
+{{< katex display>}}
+
 \begin{bmatrix}
 -2 & -1 & 0\\
 -1 & 2 & 1\\
 0 & 1 & 2
 \end{bmatrix}
+
 {{< /katex >}}
 
->El operador Sobel es utilizado en procesamiento de imágenes, especialmente en algoritmos de detección de bordes. Técnicamente es un operador diferencial discreto que calcula una aproximación al gradiente de la función de intensidad de una imagen. Para cada punto de la imagen a procesar, el resultado del operador Sobel es tanto el vector gradiente correspondiente como la norma de este vector.
+__4. Outline:__ 
 
-__4. Left-sobel:__
-{{< katex >}}
-\begin{bmatrix}
-1 & 0 & -1\\
-2 & 1 & -2\\
-1 & 0 & -1
-\end{bmatrix}
-{{< /katex >}}
+{{< katex display>}}
 
-__5. Right-sobel:__
-{{< katex >}}
-\begin{bmatrix}
--1 & 0 & 1\\
--2 & 1 & 2\\
--1 & 0 & 1
-\end{bmatrix}
-{{< /katex >}}
-
-__6. Top-sobel:__
-{{< katex >}}
-\begin{bmatrix}
-1 & 2 & 1\\
-0 & 1 & 0\\
--1 & -2 & -1
-\end{bmatrix}
-{{< /katex >}}
-
-__6. Botton-sobel:__
-{{< katex >}}
-\begin{bmatrix}
--1 & -2 & -1\\
-0 & 1 & 0\\
-1 & 2 & 1
-\end{bmatrix}
-{{< /katex >}}
-
-__7. Gaussian-blur:__ es el resultado de desenfocar una imagen por una función gaussiana (llamada así por el matemático y científico Carl Friedrich Gauss).
-{{< katex >}}
-\begin{bmatrix}
-1 & 2 & 1\\
-2 & 4 & 1\\
-1 & 2 & 1
-\end{bmatrix}
-{{< /katex >}}
-
-__8. Outline:__ 
-{{< katex >}}
 \begin{bmatrix}
 -1 & -1 & -1\\
 -1 & 9 & -1\\
 -1 & 1 & -1
 \end{bmatrix}
+
 {{< /katex >}}
+
+__5. Gaussian-blur:__ es el resultado de desenfocar una imagen por una función gaussiana (llamada así por el matemático y científico Carl Friedrich Gauss).
+
+{{< katex display>}}
+
+\begin{bmatrix}
+1 & 2 & 1\\
+2 & 4 & 1\\
+1 & 2 & 1
+\end{bmatrix}
+
+{{< /katex >}}
+
+>El operador Sobel es utilizado en procesamiento de imágenes, especialmente en algoritmos de detección de bordes. Técnicamente es un operador diferencial discreto que calcula una aproximación al gradiente de la función de intensidad de una imagen. Para cada punto de la imagen a procesar, el resultado del operador Sobel es tanto el vector gradiente correspondiente como la norma de este vector.
+
+__6. Left-sobel:__
+
+{{< katex display>}}
+
+\begin{bmatrix}
+1 & 0 & -1\\
+2 & 1 & -2\\
+1 & 0 & -1
+\end{bmatrix}
+
+{{< /katex >}}
+
+__7. Right-sobel:__
+
+{{< katex display>}}
+
+\begin{bmatrix}
+-1 & 0 & 1\\
+-2 & 1 & 2\\
+-1 & 0 & 1
+\end{bmatrix}
+
+{{< /katex >}}
+
+__8. Top-sobel:__
+
+{{< katex display>}}
+
+\begin{bmatrix}
+1 & 2 & 1\\
+0 & 1 & 0\\
+-1 & -2 & -1
+\end{bmatrix}
+
+{{< /katex >}}
+
+__9. Botton-sobel:__
+
+{{< katex display>}}
+
+\begin{bmatrix}
+-1 & -2 & -1\\
+0 & 1 & 0\\
+1 & 2 & 1
+\end{bmatrix}
+
+{{< /katex >}}
+
+# Ejercicio
+{{<details "Ejecuciòn">}}
+
+<iframe src="/VisualComputing/kernels.html" style="border:none;width:750px;height:500px;"></iframe>
+
+{{</details>}}
+
+{{<details "Còdigo">}}
 
 ```html
 <img hidden id="uploaded-image" src=""></img> <!--imagen subida, de ella se obtiene la representación binaria que luego es usada por el canvas para obtener la representación en RGBA -->
@@ -361,3 +396,4 @@ __8. Outline:__
 </script>
 
 ```
+{{< /details >}}
