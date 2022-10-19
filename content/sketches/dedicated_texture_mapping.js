@@ -19,7 +19,7 @@ let full = false; // flag to toggle full texture view
 function setup() {
     createCanvas(512 + 512, 512);
     LG = color(10, 150, 10); // line green
-    img = loadImage('../images/image.png');
+    img = loadImage('../../images/image.png');
 }
 
 function draw() {
