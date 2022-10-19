@@ -1,5 +1,10 @@
+---
+title: Ilusiones
+weight: 1
+---
+
 # Ilusiones
-## Introducciòn
+## Introducción
 Aquí se presentan cada una de las siguiente ilusiones con sus respectivas explicaciones sobre cómo funcionan, tratando de explicar porque se dan dichos fenómenos al analizar los diferentes componente de cada ilusiòn.
 
 ## Steping Illusion

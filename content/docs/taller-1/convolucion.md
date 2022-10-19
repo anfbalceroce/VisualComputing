@@ -1,6 +1,11 @@
+---
+title: Convolución
+weight: 2
+---
+
 # Marco Teorico 
 
-## Convolusiòn
+## Convolución
 
 __1. Identity:__ La mascara retorna la misma imagen
 
