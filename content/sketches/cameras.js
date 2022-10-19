@@ -38,77 +38,77 @@ class wall {
 
 const walls = []
 
-walls.push(new wall(0, -75, 255, 0, 0, 90, 10));
-walls.push(new wall(90, -75, 0,255,0, 90, 10));
-walls.push(new wall(-90, -75, 0,0,255, 90, 10));
-walls.push(new wall(140, -50, 0,0,255, 10, 60));
-walls.push(new wall(-140, -50, 0,255,0, 10, 60));
-walls.push(new wall(-75, 140, 0,0,255, 120, 10));
-walls.push(new wall(75, 140, 0,0,255, 120, 10));
-walls.push(new wall(-140, 90, 0,255,0, 10, 110));
-walls.push(new wall(140, 90, 0,255,0, 10, 110));
-walls.push(new wall(40, 90, 0,255,0, 5, 90));
-walls.push(new wall(-40, 90, 0,255,0, 5, 90));
-walls.push(new wall(-170, 40, 0,0,255, 50, 10));
-walls.push(new wall(-170, 95, 0,0,255, 50, 10));
-walls.push(new wall(-140, 290, 0,0,255, 10, 290));
-walls.push(new wall(-280, 290, 0,0,255, 10, 290));
-walls.push(new wall(-210, 440, 0,255,0, 150, 10));
-walls.push(new wall(-280, 90, 0,255,0, 10, 110));
-walls.push(new wall(-250, 95, 0,0,255, 50, 10));
-walls.push(new wall(-250, 40, 0,0,255, 50, 10));
-walls.push(new wall(-360, 140, 0,0,255, 150, 10));
-walls.push(new wall(-345, 40, 0,0,255, 120, 10));
-walls.push(new wall(-440, 90, 0,255,0, 10, 110));
-walls.push(new wall(-520, 140, 0,0,255, 150, 10));
-walls.push(new wall(-535, 40, 0,0,255, 120, 10));
-walls.push(new wall(-600, 90, 0,255,0, 10, 110));
-walls.push(new wall(-630, 40, 0,0,255, 50, 10));
-walls.push(new wall(-630, 95, 0,0,255, 50, 10));
-walls.push(new wall(-600, 290, 0,0,255, 10, 290));
-walls.push(new wall(-740, 290, 0,0,255, 10, 290));
-walls.push(new wall(-670, 440, 0,255,0, 150, 10));
-walls.push(new wall(-740, 90, 0,255,0, 10, 110));
-walls.push(new wall(-710, 95, 0,0,255, 50, 10));
-walls.push(new wall(-710, 40, 0,0,255, 50, 10));
-walls.push(new wall(-770, 40, 0,0,255, 50, 10));
-walls.push(new wall(-780, 140, 0,0,255, 70, 10));
-walls.push(new wall(-820, 57.5, 0,255,0, 10, 175));
-walls.push(new wall(-780, -25, 0,0,255, 70, 10));
-walls.push(new wall(-740, -60, 0,255,0, 10, 80));
-walls.push(new wall(-670, -105, 0,0,200, 150, 10));
-walls.push(new wall(-600, -60, 0,255,0, 10, 80));
-walls.push(new wall(-370, -25, 0,0,255, 450, 10));
-walls.push(new wall(170, 40, 0,0,255, 50, 10));
-walls.push(new wall(170, 95, 0,0,255, 50, 10));
-walls.push(new wall(140, 290, 0,0,255, 10, 290));
-walls.push(new wall(280, 290, 0,0,255, 10, 290));
-walls.push(new wall(210, 440, 0,255,0, 150, 10));
-walls.push(new wall(280, 90, 0,255,0, 10, 110));
-walls.push(new wall(250, 95, 0,0,255, 50, 10));
-walls.push(new wall(250, 40, 0,0,255, 50, 10));
-walls.push(new wall(360, 140, 0,0,255, 150, 10));
-walls.push(new wall(345, 40, 0,0,255, 120, 10));
-walls.push(new wall(440, 90, 0,255,0, 10, 110));
-walls.push(new wall(520, 140, 0,0,255, 150, 10));
-walls.push(new wall(535, 40, 0,0,255, 120, 10));
-walls.push(new wall(600, 90, 0,255,0, 10, 110));
-walls.push(new wall(630, 40, 0,0,255, 50, 10));
-walls.push(new wall(630, 95, 0,0,255, 50, 10));
-walls.push(new wall(600, 290, 0,0,255, 10, 290));
-walls.push(new wall(740, 290, 0,0,255, 10, 290));
-walls.push(new wall(670, 440, 0,255,0, 150, 10));
-walls.push(new wall(740, 90, 0,255,0, 10, 110));
-walls.push(new wall(710, 95, 0,0,255, 50, 10));
-walls.push(new wall(710, 40, 0,0,255, 50, 10));
-walls.push(new wall(770, 40, 0,0,255, 50, 10));
-walls.push(new wall(780, 140, 0,0,255, 70, 10));
-walls.push(new wall(820, 57.5, 0,255,0, 10, 175));
-walls.push(new wall(780, -25, 0,0,255, 70, 10));
-walls.push(new wall(740, -60, 0,255,0, 10, 80));
-walls.push(new wall(670, -105, 0,0,200, 150, 10));
-walls.push(new wall(600, -60, 0,255,0, 10, 80));
-walls.push(new wall(370, -25, 0,0,255, 450, 10));
+walls.push(new wall(0, -75, 128, 64, 0, 90, 10));
+walls.push(new wall(90, -75, 255,255,255, 90, 10));
+walls.push(new wall(-90, -75, 255,255,255, 90, 10));
+walls.push(new wall(140, -50, 255,255,255, 10, 60));
+walls.push(new wall(-140, -50, 255,255,255, 10, 60));
+walls.push(new wall(-75, 140, 255,255,255, 120, 10));
+walls.push(new wall(75, 140, 255,255,255, 120, 10));
+walls.push(new wall(-140, 90, 255,255,255, 10, 110));
+walls.push(new wall(140, 90, 255,255,255, 10, 110));
+walls.push(new wall(40, 90, 255,255,255, 5, 90));
+walls.push(new wall(-40, 90, 255,255,255, 5, 90));
+walls.push(new wall(-170, 40, 255, 255, 255, 50, 10));
+walls.push(new wall(-170, 95, 128, 64, 0, 50, 10));
+walls.push(new wall(-140, 290, 255,255,255, 10, 290));
+walls.push(new wall(-280, 290, 255,255,255, 10, 290));
+walls.push(new wall(-210, 440, 255,255,255, 150, 10));
+walls.push(new wall(-280, 90, 255,255,255, 10, 110));
+walls.push(new wall(-250, 95, 128,64,0, 50, 10));
+walls.push(new wall(-250, 40, 255,255,255, 50, 10));
+walls.push(new wall(-360, 140, 255,255,255, 150, 10));
+walls.push(new wall(-345, 40, 255,255,255, 120, 10));
+walls.push(new wall(-440, 90, 255,255,255, 10, 110));
+walls.push(new wall(-520, 140, 2055,255,255, 150, 10));
+walls.push(new wall(-535, 40, 255,255,255, 120, 10));
+walls.push(new wall(-600, 90, 255,255,255, 10, 110));
+walls.push(new wall(-630, 40, 255,255,255, 50, 10));
+walls.push(new wall(-630, 95, 128,64,0, 50, 10));
+walls.push(new wall(-600, 290, 255,255,255, 10, 290));
+walls.push(new wall(-740, 290, 255,255,255, 10, 290));
+walls.push(new wall(-670, 440, 255,255,255, 150, 10));
+walls.push(new wall(-740, 90, 255,255,255, 10, 110));
+walls.push(new wall(-710, 95, 128,64,0, 50, 10));
+walls.push(new wall(-710, 40, 255,255,255, 50, 10));
+walls.push(new wall(-770, 40, 255,255,255, 50, 10));
+walls.push(new wall(-780, 140, 255,255,255, 70, 10));
+walls.push(new wall(-820, 57.5, 255,255,255, 10, 175));
+walls.push(new wall(-780, -25, 255,255,255, 70, 10));
+walls.push(new wall(-740, -60, 255,255,255, 10, 80));
+walls.push(new wall(-670, -105, 255,255,255, 150, 10));
+walls.push(new wall(-600, -60, 255,255,255, 10, 80));
+walls.push(new wall(-370, -25, 255,255,255, 450, 10));
+walls.push(new wall(170, 40, 255,255,255, 50, 10));
+walls.push(new wall(170, 95, 128,64,0, 50, 10));
+walls.push(new wall(140, 290, 255,255,255, 10, 290));
+walls.push(new wall(280, 290, 255,255,255, 10, 290));
+walls.push(new wall(210, 440, 255,255,255, 150, 10));
+walls.push(new wall(280, 90, 255,255,255, 10, 110));
+walls.push(new wall(250, 95, 128,64,0, 50, 10));
+walls.push(new wall(250, 40, 255,255,255, 50, 10));
+walls.push(new wall(360, 140, 255,255,255, 150, 10));
+walls.push(new wall(345, 40, 255,255,255, 120, 10));
+walls.push(new wall(440, 90, 255,255,255, 10, 110));
+walls.push(new wall(520, 140, 255,255,255, 150, 10));
+walls.push(new wall(535, 40, 255,255,255, 120, 10));
+walls.push(new wall(600, 90, 255,255,255, 10, 110));
+walls.push(new wall(630, 40, 255,255,255, 50, 10));
+walls.push(new wall(630, 95, 128,64,0, 50, 10));
+walls.push(new wall(600, 290, 255,255,255, 10, 290));
+walls.push(new wall(740, 290, 255,255,255, 10, 290));
+walls.push(new wall(670, 440, 255,255,255, 150, 10));
+walls.push(new wall(740, 90, 255,255,255, 10, 110));
+walls.push(new wall(710, 95, 128,64,0, 50, 10));
+walls.push(new wall(710, 40, 255,255,255, 50, 10));
+walls.push(new wall(770, 40, 255,255,255, 50, 10));
+walls.push(new wall(780, 140, 255,255,255, 70, 10));
+walls.push(new wall(820, 57.5, 255,255,255, 10, 175));
+walls.push(new wall(780, -25, 255,255,255, 70, 10));
+walls.push(new wall(740, -60, 255,255,255, 10, 80));
+walls.push(new wall(670, -105, 255,255,255, 150, 10));
+walls.push(new wall(600, -60, 255,255,255, 10, 80));
+walls.push(new wall(370, -25, 255,255,255, 450, 10));
 
 class camState {
 constructor(distance, center, rotation){
@@ -259,21 +259,27 @@ function draw(){
 
     if (keyIsPressed === true) {
         switch(keyCode) {
-        case 87://UP_ARROW:
-                playerNextY = playerY + playerSpeed
-                playerFacing = 2
+        case 87://W
+                playerNextY = playerY + playerSpeed;
+                playerFacing = 2;
             break;
-        case 83://DOWN_ARROW:
-                playerNextY = playerY - playerSpeed
-                playerFacing = 0
+        case 83://S
+                playerNextY = playerY - playerSpeed;
+                playerFacing = 0;
             break;
-        case 68://RIGHT_ARROW:
-                playerNextX = playerX - playerSpeed
-                playerFacing = 3
+        case 68://D
+                playerNextX = playerX - playerSpeed;
+                playerFacing = 3;
             break;
-        case 65://LEFT_ARROW:
-                playerNextX = playerX + playerSpeed
-                playerFacing = 1   
+        case 65://A
+                playerNextX = playerX + playerSpeed;
+                playerFacing = 1;
+            break;
+        case 69://E
+                playerSpeed = playerSpeed + 0.1;
+            break;
+        case 81://Q
+                playerSpeed = playerSpeed - 0.1;
             break;
         default:
         }   
@@ -384,15 +390,15 @@ function draw(){
     g2.noStroke();
 
     // lights
-    g2.ambientLight(35);
-    g2.pointLight(10, 10, 10, 0, 0, 50);
+    // g2.ambientLight(35);
+    // g2.pointLight(10, 10, 10, 0, 0, 50);
 
     //floor
-    g2.push();
-    g2.translate(0, 0, 0);
-    g2.ambientMaterial(255,255,255);
-    g2.box(2000, 1200, 1);
-    g2.pop();
+    // g2.push();
+    // g2.translate(0, 0, 0);
+    // g2.ambientMaterial(255,255,255);
+    // g2.box(2000, 1200, 1);
+    // g2.pop();
 
     // player
     g2.push();
@@ -417,7 +423,7 @@ function draw(){
     // Render the background box for the HUD
     g1.noStroke();
     g1.fill(50,50,52, 200); // a bit of transparency
-    g1.rect(x+20,y,380,180);
+    g1.rect(x+20,y,380,200);
 
     // use the loaded font
     g1.textFont(f);
@@ -435,6 +441,7 @@ function draw(){
     g1.text("Framerate:",x+35,y+25+100);
     g1.text("playerX:",x+35,y+25+120);
     g1.text("playerY:",x+35,y+25+140);
+    g1.text("playerSpeed:",x+35,y+25+160);
 
     // Render the state numbers
     g1.fill(69,161,255);
@@ -446,6 +453,7 @@ function draw(){
     g1.text(nfs(frameRate(),    1, 2),x+125,y+25+100);
     g1.text(nfs(playerX,    1, 2),x+125,y+25+120);
     g1.text(nfs(playerY,    1, 2),x+125,y+25+140);
+    g1.text(nfs(playerSpeed,    1, 2),x+125,y+25+160);
     easycam1.endHUD();
 
     // display results
