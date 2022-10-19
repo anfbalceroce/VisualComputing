@@ -7,6 +7,11 @@ bookToc: false
 # Múltiples Cámaras
 
 {{< p5-iframe sketch="/VisualComputing/sketches/cameras.js" lib1="https://cdn.jsdelivr.net/gh/freshfork/p5.EasyCam@1.2.1/p5.easycam.js" height="823" width="823">}}
+| Tecla   | Acción              |
+|---------|---------------------|
+| W,A,S,D | Movimiento          |
+| E       | Aumentar velocidad  |
+| Q       | Disminuir velocidad |
 ## Introducción - Descripción de la idea
 Para este proyecto se tomo como referencia las cámaras de punto fijo de los juegos de Resident Evil clásicos en los que se jugaba con una cámara de punto fijo:
 
@@ -18,10 +23,20 @@ Tanto el punto de vista como el cambio en las transiciones
 
 Se hizo uso de transformaciones en el espacio y de cámaras con quaterniones, los cuaterniones son muy  ́utiles en la representación gráfica por ordenador, debido, entre otras cosas, a la posibilidad que ofrecen de representar con ellos rotaciones en el espacio tridimensional a través de los ángulos de Euler evitando el Gimbal Lock-Bloqueo del cardán. (Deformación de la imagen por perdida de libertad).
 
+
+## Desarrollo
+En el sketch se modela un entorno (primer piso del edificio insignia) en 3D utilizando la primitiva box() de p5 y se importan modelos y texturas para el jugador y otros elementos decorativos. En este modelado se utilizan las funciones push() y pop() para transformar cada elemento si impactar a los demás.
+
+Dentro de este modelo se definen cuartos o habitaciones a partir de límites en coordenadas x, y.
+A cada cuarto se le asigna una cámara, representada como valores de Centro, Distancia y Rotación. Estos valores son utilizados por la librería easycam para ubicar una cámara en una esfera identificada por el Centro, Distancia y Rotación.
+
+El jugador puede moverse con las teclas W, A, S, D, y cambiar su velocidad con las teclas E y Q. A medida que el jugador cambia de cuarto se cambia los parámetros de la cámara. En esta versión el movimiento siempre es relativo a una vista aérea sin rotaciones (implementada como un minimapa), queda la posibilidad de modificar el movimiento para que sea relativo a la cámara actual.
+
+También se hace uso de las coordenadas de cada pared y del jugador para detectar colisiones e impedir que el jugador atraviese paredes.
+
 {{<details "Código">}}
 
 ``` js
-
 /**
  * 
  * The p5.EasyCam library - Easy 3D CameraControl for p5.js and WEBGL.
@@ -412,7 +427,7 @@ function draw(){
     g1.clear();
     g2.clear();
     // projection
-    g1.perspective();
+    g1.perspective(60 * PI/180, width/height, 1, 5000);
 
     // BG
     g1.background(32);
