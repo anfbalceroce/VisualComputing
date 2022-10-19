@@ -1,7 +1,6 @@
 ---
 title: Camaras
 weight: 1
-bookToc: false
 ---
 
 # Camaras
