@@ -388,7 +388,7 @@ function draw(){
     g1.clear();
     g2.clear();
     // projection
-    g1.perspective();
+    g1.perspective(60 * PI/180, width/height, 1, 5000);
 
     // BG
     g1.background(32);
