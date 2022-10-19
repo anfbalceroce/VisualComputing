@@ -120,21 +120,93 @@ constructor(distance, center, rotation){
 
 const cams = []
 
-cams.push(new camState(900, [0, 0, 0], [0, 0, 0, 1]));
-cams.push(new camState(900, [-400, 0, 0], [0, 0, 0, 1]));
-cams.push(new camState(900, [-675, -30, 0], [0, 0, 0, 1]));
-cams.push(new camState(900, [-780, 50, 0], [0, 0, 0, 1]));
-cams.push(new camState(900, [-675, 275, 0], [0, 0, 0, 1]));
-cams.push(new camState(900, [-525, 90, 0], [0, 0, 0, 1]));
-cams.push(new camState(900, [-360, 90, 0], [0, 0, 0, 1]));
-cams.push(new camState(900, [-205, 275, 0], [0, 0, 0, 1]));
-cams.push(new camState(900, [205, 275, 0], [0, 0, 0, 1]));
-cams.push(new camState(900, [360, 90, 0], [0, 0, 0, 1]));
-cams.push(new camState(900, [525, 90, 0], [0, 0, 0, 1]));
-cams.push(new camState(900, [675, 275, 0], [0, 0, 0, 1]));
-cams.push(new camState(900, [780, 50, 0], [0, 0, 0, 1]));
-cams.push(new camState(900, [675, -30, 0], [0, 0, 0, 1]));
-cams.push(new camState(900, [400, 0, 0], [0, 0, 0, 1]));
+
+//0
+cams.push(new camState(900, [-200, 0, 0], [0, 0, 0, 1]));
+
+//1
+cams.push(new camState(197, [0, 0, 0], [0.006, -0.001, -0.109, 1]));
+
+//2
+cams.push(new camState(130, [0, 60, 0], [-0.915, -0.332, -0.074, 0.211]));
+
+//3
+cams.push(new camState(130, [90, 60, 0], [-0.910, -0.335, 0.098, -0.220]));
+//4
+cams.push(new camState(130, [-90, 60, 0], [-0.910, -0.335, 0.098, -0.220]));
+
+//5
+cams.push(new camState(132, [-210, 0, 0], [-0.002, 0, -0.033, 1]));
+
+//6
+cams.push(new camState(120, [-210, 60, 0], [0.689, 0.191, -0.113, 0.677]));
+
+//7
+cams.push(new camState(180, [-210, 270, 0], [ -0.873, -0.459, 0.104, -0.118]));
+
+//8
+cams.push(new camState(134, [-360, 0, 0], [ 0.668, 0.256, 0.180, -0.674]));
+
+//9
+cams.push(new camState(117, [-360, 90, 0], [ 0.794, 0.33, -0.195, 0.468]));
+
+//10
+cams.push(new camState(113, [-510, 0, 0], [ 0.671, 0.284, -0.245, 0.649]));
+
+//11
+cams.push(new camState(113, [-510, 90, 0], [ -0.515, -0.189, -0.354, 0.756]));
+
+//12
+cams.push(new camState(120, [-720, 0, 0], [ 0.563, 0.249, 0.241, -0.749]));
+
+//13
+cams.push(new camState(134, [-660, -45, 0], [ 0, -0.003, 0.164, -0.986]));
+
+//14
+cams.push(new camState(120, [-660, 60, 0], [0.689, 0.191, 0.191, -0.687]));
+
+//15
+cams.push(new camState(190, [-660, 270, 0], [ 0.855, 0.478, 0.105, -0.169]));
+
+//16
+cams.push(new camState(100, [-765, 90, 0], [ .920, 0.161, 0.046, 0.351]));
+
+//17
+cams.push(new camState(132, [210, 0, 0], [-0.002, 0, -0.033, 1]));
+
+//18
+cams.push(new camState(120, [210, 60, 0], [0.689, 0.191, -0.113, 0.677]));
+
+//19
+cams.push(new camState(180, [210, 270, 0], [ 0.852, 0.485, 0.100, -0.163]));
+
+//20
+cams.push(new camState(134, [360, 0, 0], [ -0.668, -0.256, 0.180, -0.674]));
+
+//21
+cams.push(new camState(117, [360, 90, 0], [ 0.794, 0.33, -0.195, 0.468]));
+
+//22
+cams.push(new camState(113, [510, 0, 0], [ 0.671, 0.284, 0.245, -0.649]));
+
+//23
+cams.push(new camState(100, [510, 90, 0], [ 0.810, 0.351, 0.185, -0.429]));
+
+//24
+cams.push(new camState(130, [720, 0, 0], [ -0.671, -0.284, 0.237, -0.642]));
+
+//25
+cams.push(new camState(134, [660, -45, 0], [ 0, -0.003, 0.164, -0.986]));
+
+//26
+cams.push(new camState(105, [660, 60, 0], [0.689, 0.191, 0.191, -0.687]));
+
+//27
+cams.push(new camState(190, [660, 270, 0], [ 0.864, 0.482, 0.061, -0.127]));
+
+//28
+cams.push(new camState(100, [765, 90, 0], [ 0.869, 0.291, -0.138, 0.374]));
+
 
 var currentCam = 1;
 
@@ -153,21 +225,36 @@ constructor(X1, X2, Y1, Y2){
 
 const rooms = []
 
-rooms.push(new room(-130, 130, -65, 130));
-rooms.push(new room(-600, -140, -15, 30));
-rooms.push(new room(-730, -610, -95, 30));
-rooms.push(new room(-810, -740, -15, 130));
-rooms.push(new room(-730, -610, 40, 430));
-rooms.push(new room(-590, -450, 40, 130));
+
+rooms.push(new room(-140, 140, -75, 45));
+rooms.push(new room(-40, 40, 45, 135));
+rooms.push(new room(40, 130, 45, 135));
+rooms.push(new room(-130, -40, 45, 135));
+rooms.push(new room(-280, -140, -15, 30));
+rooms.push(new room(-280, -140, 40, 95));
+rooms.push(new room(-280, -140, 105, 430));
+rooms.push(new room(-440, -290, -15, 30));
 rooms.push(new room(-430, -290, 40, 130));
-rooms.push(new room(-270, -150, 40, 430));
-rooms.push(new room(150, 270, 40, 430));
+rooms.push(new room(-590, -440, -15, 30));
+rooms.push(new room(-590, -450, 40, 130));
+rooms.push(new room(-810, -600, -15, 30));
+rooms.push(new room(-730, -610, -95, -25));
+rooms.push(new room(-730, -610, 40, 95));
+rooms.push(new room(-730, -610, 105, 430));
+rooms.push(new room(-810, -750, 40, 130));
+
+rooms.push(new room(140, 280, -15, 30));
+rooms.push(new room(140, 280, 40, 95));
+rooms.push(new room(140, 280, 105, 430));
+rooms.push(new room(290, 440, -15, 30));
 rooms.push(new room(290, 430, 40, 130));
+rooms.push(new room(440, 590, -15, 30));
 rooms.push(new room(450, 590, 40, 130));
-rooms.push(new room(610, 730, 40, 430));
-rooms.push(new room(740, 810, -15, 130));
-rooms.push(new room(610, 730, -95, 30));
-rooms.push(new room(140, 600, -65, 130));
+rooms.push(new room(600, 810, -15, 30));
+rooms.push(new room(610, 730, -95, -25));
+rooms.push(new room(610, 730, 40, 95));
+rooms.push(new room(610, 730, 105, 430));
+rooms.push(new room(750, 810, 40, 130));
 
 var currentRoom = 0;
 
