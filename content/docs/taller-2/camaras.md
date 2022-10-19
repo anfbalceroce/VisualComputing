@@ -5,6 +5,16 @@ weight: 1
 
 # Camaras
 
+## Introducción - Descripción de la idea
+> Para este proyecto se tomo como referencia las camaras de punto fijo de los juegos de Resident Evil clásicos en los que se jugaba con una cámara de punto fijo:
+
+{{<img src="/VisualComputing/sketches/re-fixedcam-1.png" /> height="823" width="823">}}
+
+> Tanto el punto de vista como el cambio en las transiciones
+
+{{<img src="/VisualComputing/sketches/fixcam-gif.gif" /> height="823" width="823">}}
+
+> Se hizo uso de transformaciones en el espacio y de camaras con quaterniones, los cuaterniones son muy  ́utiles en la representación gráfica por ordenador, debido, entre otras cosas, a la posibilidad que ofrecen de representar con ellos rotaciones en el espacio tridimensional a través de los ángulos de Euler evitando el Gimbal Lock. (Deformación de la imagen).
 
 {{< p5-iframe sketch="/VisualComputing/sketches/cameras.js" lib1="https://cdn.jsdelivr.net/gh/freshfork/p5.EasyCam@1.2.1/p5.easycam.js" height="823" width="823">}}
 
