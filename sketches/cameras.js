@@ -122,7 +122,7 @@ const cams = []
 
 
 //0
-cams.push(new camState(900, [-200, 0, 0], [0, 0, 0, 1]));
+//cams.push(new camState(900, [-200, 0, 0], [0, 0, 0, 1]));
 
 //1
 cams.push(new camState(197, [0, 0, 0], [0.006, -0.001, -0.109, 1]));
@@ -408,7 +408,7 @@ function draw(){
 
     // player
     g1.push();
-    g1.translate(playerX, playerY, 15.5);
+    g1.translate(playerX, playerY, 0);
     g1.ambientMaterial(0,0,0);
     g1.scale(2);
     g1.rotateX(PI/2*(-3));
