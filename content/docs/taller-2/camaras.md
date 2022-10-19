@@ -592,5 +592,5 @@ function displayResult_WEBGL(){
 * Es posible crear un entorno 3D virtual con solo dos dimensiones, controlando los ángulos implicados en el proceso y evitando la deformación espacial por las perspectivas, existen librerias especificas para este propósito, entre ellas están EasyCam que ya han hecho todo el trabajo matemático para permitir crear estos entornos con instrucciones simplificadas.
 
 ## References
-* EasyCamhttps://github.com/freshfork/p5.EasyCam
+* EasyCam https://github.com/freshfork/p5.EasyCam
 * Carratalá Rocío, Tomado de http://repositori.uji.es/xmlui/bitstream/handle/10234/139036/TFG_2015_CarratalaSaezR.pdf?sequence=1
