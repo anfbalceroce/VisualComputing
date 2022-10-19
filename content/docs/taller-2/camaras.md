@@ -14,7 +14,7 @@ weight: 1
 
 {{<img src="/VisualComputing/sketches/fixcam-gif.gif" /> height="823" width="823">}}
 
-> Se hizo uso de transformaciones en el espacio y de camaras con quaterniones, los cuaterniones son muy  ́utiles en la representación gráfica por ordenador, debido, entre otras cosas, a la posibilidad que ofrecen de representar con ellos rotaciones en el espacio tridimensional a través de los ángulos de Euler evitando el Gimbal Lock. (Deformación de la imagen).
+> Se hizo uso de transformaciones en el espacio y de camaras con quaterniones, los cuaterniones son muy  ́utiles en la representación gráfica por ordenador, debido, entre otras cosas, a la posibilidad que ofrecen de representar con ellos rotaciones en el espacio tridimensional a través de los ángulos de Euler evitando el Gimbal Lock-Bloqueo del cardán. (Deformación de la imagen por perdida de libertad).
 
 {{< p5-iframe sketch="/VisualComputing/sketches/cameras.js" lib1="https://cdn.jsdelivr.net/gh/freshfork/p5.EasyCam@1.2.1/p5.easycam.js" height="823" width="823">}}
 
