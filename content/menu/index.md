@@ -5,4 +5,5 @@ headless: true
 - **Contenido**
 
 - [Ilusiones]({{< relref "/docs/contenido/ilusiones.md" >}})
-- [Convolución]({{< relref "/docs/contenido/convolucion.md" >}})
+- [Convolution]({{< relref "/docs/contenido/convolucion.md" >}})
+- [W2 Optional Exercises]({{< relref "/docs/contenido/W2_Optional.md" >}})
