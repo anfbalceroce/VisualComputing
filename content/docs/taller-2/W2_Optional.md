@@ -1,3 +1,7 @@
+---
+title: Ejercicio Opcional
+weight: 2
+---
 # Workshop 02 - Optional Exercises
 
 >### Exercise
