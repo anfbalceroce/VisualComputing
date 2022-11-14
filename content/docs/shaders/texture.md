@@ -1,6 +1,6 @@
 ---
 title: Texture Mapping Shader
-weight: 1
+weight: 2
 ---
 # Marco teórico 
 
