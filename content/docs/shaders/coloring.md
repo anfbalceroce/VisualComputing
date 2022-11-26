@@ -2,6 +2,7 @@
 title: Color Shader
 weight: 1
 ---
+# Coloring
 
 # Marco teórico 
 

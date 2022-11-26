@@ -2,6 +2,9 @@
 title: Lighting
 weight: 8
 ---
+
+# Lighting
+
 # Marco teórico 
 
 # Ejercicio

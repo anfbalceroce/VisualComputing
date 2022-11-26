@@ -1,7 +1,10 @@
 ---
-title: Texture Mapping Shader
-weight: 2
+title: Image processing
+weight: 3
 ---
+
+# Image processing
+
 # Marco teórico 
 
 # Ejercicio

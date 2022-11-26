@@ -1,7 +1,10 @@
 ---
-title: Texture Mapping Shader
+title: Procedural texturing
 weight: 4
 ---
+
+# Procedural texturing
+
 # Marco teórico 
 
 # Ejercicio
