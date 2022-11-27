@@ -14,7 +14,7 @@ Una luz ambiental proyecta suaves rayos de luz en todas las direcciones. No tien
 
 ># Ejercicio
 >Implemente una escena que haga uso de la siguiente ecuación de ilumincación donde ambient4 es el color de la luz ambiental. 
-{{< p5-iframe sketch="/VisualComputing/sketches/Lighting_1/sketch.js" width="550" height="550">}}
+{{< p5-iframe sketch="/VisualComputing/sketches/Lighting_1/sketch.js" lib1="https://cdn.jsdelivr.net/gh/VisualComputing/p5.treegl/p5.treegl.js" lib2="https://cdn.jsdelivr.net/gh/freshfork/p5.EasyCam@1.2.1/p5.easycam.js" width="550" height="550">}}
 
 {{<details "Código">}}
 
@@ -120,7 +120,7 @@ function draw() {
 La iluminación difusa (o reflexión difusa) es la iluminación directa de un objeto por una cantidad uniforme de luz que interactúa con una superficie que dispersa la luz.[4][9] Después de que la luz incide en un objeto, se refleja en función de las propiedades de la superficie del objeto, así como del ángulo de la luz entrante. Esta interacción es el principal contribuyente al brillo del objeto y constituye la base de su color.
 ># Ejercicio
 >Implementar una escena de sombreado de dibujos animados
-{{< p5-iframe sketch="/VisualComputing/sketches/Lighting_2/sketch.js" width="550" height="550">}}
+{{< p5-iframe sketch="/VisualComputing/sketches/Lighting_2/sketch.js" lib1="https://cdn.jsdelivr.net/gh/VisualComputing/p5.treegl/p5.treegl.js" lib2="https://cdn.jsdelivr.net/gh/freshfork/p5.EasyCam@1.2.1/p5.easycam.js" width="550" height="550">}}
 
 
 {{<details "Código">}}
@@ -235,7 +235,7 @@ Se refiere a los reflejos de los objetos reflectantes, como diamantes, bolas de 
 Una reflexión especular es visible solo donde la superficie normal está orientada precisamente a la mitad entre la dirección de la luz entrante y la dirección del espectador; esto se llama la dirección del medio ángulo porque biseca (divide en dos) el ángulo entre la luz entrante y el espectador. Por lo tanto, una superficie reflectora especular mostraría un punto culminante especular como la imagen reflejada perfectamente nítida de una fuente de luz. Sin embargo, muchos objetos brillantes muestran reflejos especulares borrosos.
 ># Ejercicio
 >Implemente una escena de reflexión especular|difusa:
-{{< p5-iframe sketch="/VisualComputing/sketches/Lighting_3/sketch.js" width="550" height="550">}}
+{{< p5-iframe sketch="/VisualComputing/sketches/Lighting_3/sketch.js" lib1="https://cdn.jsdelivr.net/gh/VisualComputing/p5.treegl/p5.treegl.js" lib2="https://cdn.jsdelivr.net/gh/freshfork/p5.EasyCam@1.2.1/p5.easycam.js" width="550" height="550">}}
 
 {{<details "Código">}}
 
