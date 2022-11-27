@@ -7,7 +7,7 @@ let modelsSlider;
 let colorPicker;
 
 function preload() {
-  toonShader = loadShader('vert.frag', 'frag.frag');
+  toonShader = loadShader('/VisualComputing/sketches/Lighting_2/vert.frag', '/VisualComputing/sketches/Lighting_2/frag.frag');
 }
 
 function setup() {

@@ -7,7 +7,7 @@ let modelsSlider;
 let colorPicker;
 
 function preload() {
-  myShader = readShader("ambient.frag", {varyings: Tree.NONE,});
+  myShader = readShader("/VisualComputing/sketches/Lighting_1/ambient.frag", {varyings: Tree.NONE,});
 }
 
 function setup() {

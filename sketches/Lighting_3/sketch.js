@@ -8,7 +8,7 @@ let focos;
 let selectPos;
 
 function preload() {
-  myShader = readShader('ambient.frag', { varyings: Tree.normal3 | Tree.position4 });
+  myShader = readShader('/VisualComputing/sketches/Lighting_3/ambient.frag', { varyings: Tree.normal3 | Tree.position4 });
 }
 
 function setup() {
