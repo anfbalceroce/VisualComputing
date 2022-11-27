@@ -2,8 +2,8 @@
 title: Lighting
 weight: 8
 ---
-# Marco teórico 
 # Lighting
+
 La iluminación en gráficos por computadora se refiere a la colocación de luces en una escena para lograr algún efecto deseado. Los paquetes de síntesis de imágenes y animación contienen diferentes tipos de luces que se pueden colocar en diferentes lugares y modificar cambiando los parámetros. Con demasiada frecuencia, las personas que crean imágenes o animaciones ignoran o ponen poco énfasis en la iluminación. []
 
 En gráficos por computadora, el efecto general de una fuente de luz sobre un objeto está determinado por la combinación de las interacciones del objeto con él, generalmente descritas por al menos tres componentes principales. Los tres componentes principales de iluminación (y los tipos de interacción subsiguientes) son difusos, ambientales y especulares. [] 
