@@ -185,4 +185,3 @@ function updatePointLight() {
     color: color(1, r, g)
   }];
 }
-
