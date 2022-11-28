@@ -115,7 +115,7 @@ function setup() {
   myShader.setUniform('phongExp', phongExpSlider.value());
   myShader.setUniform('attenuationRate', attenuationRate.value());
   myShader.setUniform('lightCount', 1);
-  myShader.setUniform('lightsColors', [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]);
+  myShader.setUniform('lightsColors', [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0]);
 }
 
 function draw() {
@@ -123,6 +123,7 @@ function draw() {
   
   background(0);  
   let point = updatePointLight();
+  lightsColors = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   resetShader();
   
   push();
@@ -133,6 +134,11 @@ function draw() {
 
   
   for (let i = 0; i < selectPos.value(); i++) {    
+    let color = colors[i].color();
+    lightsColors[i*4+0] = red(color) / 255;
+    lightsColors[i*4+1] = green(color) / 255;
+    lightsColors[i*4+2] = blue(color) / 255;
+    lightsColors[i*4+3] = 1;    
     push();
     translate(point[i].position);
     noStroke();
@@ -144,6 +150,7 @@ function draw() {
 
   shader(myShader);
   myShader.setUniform('uLightPosition', lights.flat());  
+  myShader.setUniform("lightsColors", lightsColors);
   
   for (let i = 0; i < itemsPlane.value(); i++) {
     push();
