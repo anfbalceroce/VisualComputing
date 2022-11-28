@@ -10,7 +10,7 @@ Todo tipo de geometría no euclidiana puede ser implementado creando un vinculo 
 Todas las figuras se renderizan primero en sus propios objetos buffer p5.Graphics fuera de la pantalla utilizando el mismo punto de vista. Los n búferes obtenidos se mapean en las n caras del lienzo principal utilizando un shader personalizado, de nuevo desde el mismo punto de vista.
 
 {{<details "Shader">}}
-``` 
+``` glsl
 precision mediump float;
 
 
@@ -32,7 +32,8 @@ width="575" height="575">}}
 
 {{<details "Código">}}
 
-``` let easycam;
+``` js
+let easycam;
 let edge = 80;
 let button1, button2, button3;
 let use = 1;
@@ -479,5 +480,5 @@ function octahedron(){
 
 ## Referencias
 
- 1) "The Book of Shaders", https://thebookofshaders.com/08/, Patricio Gonzalez Vivo
+ 1) "The Book of Shaders", https://thebookofshaders.com/04/, Patricio Gonzalez Vivo
  2) "Encyclopedia of Mathematics", https://encyclopediaofmath.org/wiki/Platonic_solids
