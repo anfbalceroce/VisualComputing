@@ -1,0 +1,298 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Exercise # Implement your own source dataset and a mechanism to select different images from it. Implement a pixelator in software that doesn’t use spatial coherence and compare the results with those obtained here. Spatial Coherence # En este ejericio se hace una implementación del pixelado de imágenes usando coherencia espacial. El shader pixelator recibe la imagen y la resolución a utilizar. Una resolución de 30 significa que la imagen pixelada tendrá 30 pixeles de baja resolución (grandes) en cada lado."><meta name=theme-color content="#FFFFFF"><meta name=color-scheme content="light dark"><meta property="og:title" content="Spatial Coherence"><meta property="og:description" content="Exercise # Implement your own source dataset and a mechanism to select different images from it. Implement a pixelator in software that doesn’t use spatial coherence and compare the results with those obtained here. Spatial Coherence # En este ejericio se hace una implementación del pixelado de imágenes usando coherencia espacial. El shader pixelator recibe la imagen y la resolución a utilizar. Una resolución de 30 significa que la imagen pixelada tendrá 30 pixeles de baja resolución (grandes) en cada lado."><meta property="og:type" content="article"><meta property="og:url" content="https://anfbalceroce.github.io/VisualComputing/docs/shaders/SpatialCoherence/"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2022-11-27T21:20:29-05:00"><title>Spatial Coherence | Visual Computing 2022-2</title><link rel=manifest href=/VisualComputing/manifest.json><link rel=icon href=/VisualComputing/favicon.png type=image/x-icon><link rel=stylesheet href=/VisualComputing/book.min.ab46de3e725a6415339a37bba23a0067534a37289b063c9f8d011515a63097a8.css integrity="sha256-q0bePnJaZBUzmje7ojoAZ1NKNyibBjyfjQEVFaYwl6g=" crossorigin=anonymous><script defer src=/VisualComputing/flexsearch.min.js></script>
+<script defer src=/VisualComputing/en.search.min.46ba94204fa987db528e63a04561de9568e07dd15bc29dc8ebe766b98d29a190.js integrity="sha256-RrqUIE+ph9tSjmOgRWHelWjgfdFbwp3I6+dmuY0poZA=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/VisualComputing/><span>Visual Computing 2022-2</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li class=book-section-flat><span>Taller 1</span><ul><li><a href=/VisualComputing/docs/taller-1/ilusiones/>Ilusiones</a></li><li><a href=/VisualComputing/docs/taller-1/convolucion/>Convolución</a></li></ul></li><li class=book-section-flat><span>Taller 2</span><ul><li><a href=/VisualComputing/docs/taller-2/camaras/>Múltiples Cámaras</a></li><li><a href=/VisualComputing/docs/taller-2/W2_Optional/>Ejercicio Opcional</a></li></ul></li><li class=book-section-flat><span>Shaders</span><ul><li><a href=/VisualComputing/docs/shaders/coloring/>Color Shader</a></li><li><a href=/VisualComputing/docs/shaders/texturing/>Texture Mapping Shader</a></li><li><a href=/VisualComputing/docs/shaders/image_processing/>Image processing</a></li><li><a href=/VisualComputing/docs/shaders/ImageProcessing/>Image Processing</a></li><li><a href=/VisualComputing/docs/shaders/procedural_texturing/>Procedural texturing</a></li><li><a href=/VisualComputing/docs/shaders/ProceduralTexturing/>Procedural Texturing</a></li><li><a href=/VisualComputing/docs/shaders/non-euclidean_geometry/>Non-Euclidean geometry</a></li><li><a href=/VisualComputing/docs/shaders/SpatialCoherence/ class=active>Spatial Coherence</a></li><li><a href=/VisualComputing/docs/shaders/spatial_coherence/>Spatial coherence</a></li><li><a href=/VisualComputing/docs/shaders/photomosaic/>Photomosaic</a></li><li><a href=/VisualComputing/docs/shaders/lighting/>Lighting</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/VisualComputing/svg/menu.svg class=book-icon alt=Menu></label>
+<strong>Spatial Coherence</strong>
+<label for=toc-control><img src=/VisualComputing/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><ul><li><a href=#exercise>Exercise</a></li><li><a href=#spatial-coherence>Spatial Coherence</a><ul><li><a href=#controles>Controles</a></li></ul></li><li><a href=#dataset>Dataset</a></li><li><a href=#average-color-no-spatial-coherence>Average Color (No Spatial Coherence)</a><ul><li><a href=#controles-1>Controles</a></li></ul></li></ul></li></ul></nav></aside></header><article class=markdown><h2 id=exercise>Exercise
+<a class=anchor href=#exercise>#</a></h2><ol><li>Implement your own source dataset and a mechanism to select different images from it.</li><li>Implement a pixelator in software that doesn’t use spatial coherence and compare the results with those obtained here.</li></ol><h2 id=spatial-coherence>Spatial Coherence
+<a class=anchor href=#spatial-coherence>#</a></h2><p>En este ejericio se hace una implementación del pixelado de imágenes usando coherencia espacial. El shader pixelator recibe la imagen y la resolución a utilizar. Una resolución de 30 significa que la imagen pixelada tendrá 30 pixeles de baja resolución (grandes) en cada lado.</p><p>El mecanismo de coherencia espacial opera de la siguiente forma: Para cada texel se recibe una coordenada normalizada [0..1]. Cada componente se multiplica por la resolución por lo que si esta es 30, ahora [0..30]. Luego, a estas componentes se les calcula la función piso. De esta manera, por ejemplo, todas las coordenadas dentro del espacio [2, 3)x[2, 3) serán mapeadas a la coordenada (2, 2). Esta coordenada se divide entre la resolución para volver a obtener valores normalizadas. El color de la coordenada (2, 2) es asignado a todos los texeles en [2, 3)x[2, 3). Aquí la coherencia espacial sea aplica porque se asume que ese color será cercano a los colores de todos los texeles que se mapean a dicha coordenada, aunque no sea cierto en todos los casos, pero siendo muy probable.</p><p>Se añadó una implementación que no usa coherencia espacial para que el usuario pueda comparar los resultados. Esta otra implementación, pinta cada pixel de baja resolución con el color promedio de los colores de los pixeles que se mapean a dicha coordenada. Esta aplicación fue implementada por software, es decir, no se usan shaders. El usuario debe subir la imagen que quiere comparar manualmentee a ambas implementaciones y mover el slider para que ambas tengan la misma resolución.</p><p>Se observará que no hay gran diferencia en los colores usados en los pixeles de baja resolución. Tal vez incluso parezca que la coherencia espacial muestra la imagen pixelada con un poco más de detalle, mientras que la que usa el promedio de los colores pareciera que estuviera pasando un efecto de blur o lo menos algo similar &mldr;).</p><p>La implementación sin coherencia espacial no acepta videos, por lo que solo podrá hacer la comparación con imágenes.</p><h3 id=controles>Controles
+<a class=anchor href=#controles>#</a></h3><ul><li><strong>Botón Choose File</strong>: para cargar una imagen o video</li><li><strong>Checkbox Default Video</strong>: marcar para usar el video por defecto, desmarcar para usar la imagen por defecto</li><li><strong>Slider</strong>: define la resolución (por defecto 30, es decir 30 pixeles de baja resolución por cada lado de la cuadrícula). El mínimo valor es 1 y el máximo 150. Una resolución mayor, implica más pixeles, y por tanto, de menor tamaño cada vez. El tamaño de la cuadrícula es de 600px x 600px por lo que una resolución de 150 implica pixeles de baja resolución de dimensiones 4px x 4px.</li><li><strong>Select</strong>: para decidir si ver la imagen pixelada o la original</li><li><strong>Input</strong>: ingrese un número entre 1 y 30 para escoger una imagen del dataset. El dataset se muestra en orden abajo de esta aplicación. Observe por ejemplo que panda rojo le corresponde el número 7. Una vez ingresado un número puede usar las flechas de su teclado para cambiar de imagen, siempre que el foco esté sobre el input.</li></ul><iframe id=scoherence style=width:650px;height:750px srcdoc="
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <script src=https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js></script>
+            <script src=https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/addons/p5.sound.min.js></script>
+             <script src=https://cdn.jsdelivr.net/gh/VisualComputing/p5.treegl/p5.treegl.js></script> 
+            
+            
+            
+            
+            <script src=/VisualComputing/sketches/shaders/SpatialCoherence/scoherence.js></script>
+          </head>
+          <body>
+          </body>
+        </html>
+      "></iframe><h2 id=dataset>Dataset
+<a class=anchor href=#dataset>#</a></h2><img src=/VisualComputing/docs/shaders/resources/dataset/1.jpg alt=1 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/2.jpg alt=2 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/3.jpg alt=3 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/4.jpg alt=4 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/5.jpg alt=5 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/6.jpg alt=6 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/7.jpg alt=7 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/8.jpg alt=8 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/9.jpg alt=9 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/10.jpg alt=10 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/11.jpg alt=11 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/12.jpg alt=12 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/13.jpg alt=13 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/14.jpg alt=14 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/15.jpg alt=15 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/16.jpg alt=16 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/17.jpg alt=17 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/18.jpg alt=18 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/19.jpg alt=19 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/20.jpg alt=20 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/21.jpg alt=21 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/22.jpg alt=22 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/23.jpg alt=23 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/24.jpg alt=24 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/25.jpg alt=25 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/26.jpg alt=26 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/27.jpg alt=27 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/28.jpg alt=28 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/29.jpg alt=29 width=150>
+<img src=/VisualComputing/docs/shaders/resources/dataset/30.jpg alt=30 width=150>
+<details><summary>Sketch Code</summary><div class=markdown-inner><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#e6db74>&#39;use strict&#39;</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>img</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>pixelatorShader</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>resolution</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>mode</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>input</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>imgcode</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>dataset</span> <span style=color:#f92672>=</span> [];
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>video_on</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>function</span> <span style=color:#a6e22e>preload</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>img</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>loadImage</span>(<span style=color:#e6db74>`/VisualComputing/docs/shaders/resources/dataset/</span><span style=color:#e6db74>${</span><span style=color:#66d9ef>int</span>(<span style=color:#a6e22e>random</span>(<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>31</span>))<span style=color:#e6db74>}</span><span style=color:#e6db74>.jpg`</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>let</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>; <span style=color:#a6e22e>i</span> <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>30</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>dataset</span>.<span style=color:#a6e22e>push</span>(<span style=color:#a6e22e>loadImage</span>(<span style=color:#e6db74>`/VisualComputing/docs/shaders/resources/dataset/</span><span style=color:#e6db74>${</span><span style=color:#a6e22e>i</span><span style=color:#e6db74>}</span><span style=color:#e6db74>.jpg`</span>));
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>pixelatorShader</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>readShader</span>(<span style=color:#e6db74>&#39;/VisualComputing/docs/shaders/fragments/pixelator.frag&#39;</span>, { <span style=color:#a6e22e>matrices</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>Tree</span>.<span style=color:#a6e22e>NONE</span>, <span style=color:#a6e22e>varyings</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>Tree</span>.<span style=color:#a6e22e>texcoords2</span> });
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>function</span> <span style=color:#a6e22e>setup</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>createCanvas</span>(<span style=color:#ae81ff>600</span>, <span style=color:#ae81ff>600</span>, <span style=color:#a6e22e>WEBGL</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>textureMode</span>(<span style=color:#a6e22e>NORMAL</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>noStroke</span>();
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>shader</span>(<span style=color:#a6e22e>pixelatorShader</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>resolution</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>createSlider</span>(<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>150</span>, <span style=color:#ae81ff>30</span>, <span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>resolution</span>.<span style=color:#a6e22e>position</span>(<span style=color:#ae81ff>100</span>, <span style=color:#ae81ff>10</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>resolution</span>.<span style=color:#a6e22e>style</span>(<span style=color:#e6db74>&#39;width&#39;</span>, <span style=color:#e6db74>&#39;150px&#39;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>resolution</span>.<span style=color:#a6e22e>input</span>(() =&gt; <span style=color:#a6e22e>pixelatorShader</span>.<span style=color:#a6e22e>setUniform</span>(<span style=color:#e6db74>&#39;resolution&#39;</span>, <span style=color:#a6e22e>resolution</span>.<span style=color:#a6e22e>value</span>()));
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>pixelatorShader</span>.<span style=color:#a6e22e>setUniform</span>(<span style=color:#e6db74>&#39;resolution&#39;</span>, <span style=color:#a6e22e>resolution</span>.<span style=color:#a6e22e>value</span>());
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>mode</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>createSelect</span>();
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>mode</span>.<span style=color:#a6e22e>position</span>(<span style=color:#ae81ff>10</span>, <span style=color:#ae81ff>10</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>mode</span>.<span style=color:#a6e22e>option</span>(<span style=color:#e6db74>&#39;original&#39;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>mode</span>.<span style=color:#a6e22e>option</span>(<span style=color:#e6db74>&#39;pixelator&#39;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>mode</span>.<span style=color:#a6e22e>selected</span>(<span style=color:#e6db74>&#39;pixelator&#39;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>mode</span>.<span style=color:#a6e22e>changed</span>(() =&gt; {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>mode</span>.<span style=color:#a6e22e>value</span>() <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;original&#39;</span>)
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>resolution</span>.<span style=color:#a6e22e>hide</span>();
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>resolution</span>.<span style=color:#a6e22e>show</span>();
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>pixelatorShader</span>.<span style=color:#a6e22e>setUniform</span>(<span style=color:#e6db74>&#39;original&#39;</span>, <span style=color:#a6e22e>mode</span>.<span style=color:#a6e22e>value</span>() <span style=color:#f92672>===</span> <span style=color:#e6db74>&#39;original&#39;</span>);
+</span></span><span style=display:flex><span>  });
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>input</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>createFileInput</span>(<span style=color:#a6e22e>handleFile</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>imgcode</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>createInput</span>(<span style=color:#e6db74>&#39;&#39;</span>, <span style=color:#e6db74>&#39;number&#39;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>video_on</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>createCheckbox</span>(<span style=color:#e6db74>&#39;default video&#39;</span>, <span style=color:#66d9ef>false</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>video_on</span>.<span style=color:#a6e22e>changed</span>(() =&gt; {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>video_on</span>.<span style=color:#a6e22e>checked</span>()) {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>img</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>createVideo</span>([<span style=color:#e6db74>&#39;/VisualComputing/docs/shaders/resources/video2.mp4&#39;</span>]);
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>img</span>.<span style=color:#a6e22e>hide</span>();
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>img</span>.<span style=color:#a6e22e>loop</span>();
+</span></span><span style=display:flex><span>    } <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>img</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>loadImage</span>(<span style=color:#e6db74>`/VisualComputing/docs/shaders/resources/dataset/</span><span style=color:#e6db74>${</span><span style=color:#66d9ef>int</span>(<span style=color:#a6e22e>random</span>(<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>31</span>))<span style=color:#e6db74>}</span><span style=color:#e6db74>.jpg`</span>);
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>img</span>.<span style=color:#a6e22e>hide</span>();
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>img</span>.<span style=color:#a6e22e>pause</span>();
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>photomosaicShader</span>.<span style=color:#a6e22e>setUniform</span>(<span style=color:#e6db74>&#39;source&#39;</span>, <span style=color:#a6e22e>img</span>);
+</span></span><span style=display:flex><span>  })
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>function</span> <span style=color:#a6e22e>draw</span>() {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>imgcode</span>.<span style=color:#a6e22e>value</span>() <span style=color:#f92672>!=</span> <span style=color:#e6db74>&#39;&#39;</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>img</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>dataset</span>[(parseInt(<span style=color:#a6e22e>imgcode</span>.<span style=color:#a6e22e>value</span>()) <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>) <span style=color:#f92672>%</span> <span style=color:#a6e22e>dataset</span>.<span style=color:#a6e22e>length</span>];
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>img</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>null</span>) {
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>image</span>(<span style=color:#a6e22e>img</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>600</span>, <span style=color:#ae81ff>600</span>); 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>pixelatorShader</span>.<span style=color:#a6e22e>setUniform</span>(<span style=color:#e6db74>&#39;source&#39;</span>, <span style=color:#a6e22e>img</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>beginShape</span>();
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>vertex</span>(<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>, <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>vertex</span>(<span style=color:#ae81ff>1</span>, <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>vertex</span>(<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>0</span>);
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>vertex</span>(<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>);
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>endShape</span>();
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>function</span> <span style=color:#a6e22e>handleFile</span>(<span style=color:#a6e22e>file</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>file</span>.<span style=color:#a6e22e>type</span> <span style=color:#f92672>===</span> <span style=color:#e6db74>&#39;image&#39;</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>img</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>createImg</span>(<span style=color:#a6e22e>file</span>.<span style=color:#a6e22e>data</span>, <span style=color:#e6db74>&#39;&#39;</span>);
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>img</span>.<span style=color:#a6e22e>hide</span>();
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>file</span>.<span style=color:#a6e22e>type</span> <span style=color:#f92672>===</span> <span style=color:#e6db74>&#39;video&#39;</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>img</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>createVideo</span>([<span style=color:#a6e22e>file</span>.<span style=color:#a6e22e>data</span>]);
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>img</span>.<span style=color:#a6e22e>hide</span>();
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>img</span>.<span style=color:#a6e22e>loop</span>();
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>imgcode</span>.<span style=color:#a6e22e>value</span>(<span style=color:#e6db74>&#39;&#39;</span>) <span style=color:#75715e>// to avoid getting dataset image instead
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></div></details><details><summary>Pixelator Shader Code</summary><div class=markdown-inner><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-glsl data-lang=glsl><span style=display:flex><span><span style=color:#66d9ef>precision</span> <span style=color:#66d9ef>mediump</span> <span style=color:#66d9ef>float</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// source (image or video) is sent by the sketch</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>uniform</span> <span style=color:#66d9ef>sampler2D</span> source;
+</span></span><span style=display:flex><span><span style=color:#75715e>// displays original</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>uniform</span> <span style=color:#66d9ef>bool</span> original;
+</span></span><span style=display:flex><span><span style=color:#75715e>// target horizontal &amp; vertical resolution</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>uniform</span> <span style=color:#66d9ef>float</span> resolution;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// interpolated texcoord (same name and type as in vertex shader)</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// defined as a (normalized) vec2 in [0..1]</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>varying</span> <span style=color:#66d9ef>vec2</span> texcoords2;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> main() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (original) {
+</span></span><span style=display:flex><span>    gl_FragColor <span style=color:#f92672>=</span> texture2D(source, texcoords2);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// define stepCoord to sample the texture source as a 3-step process:</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// i. define stepCoord as a texcoords2 remapping in [0.0, resolution] ∈ R</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>vec2</span> stepCoord <span style=color:#f92672>=</span> texcoords2 <span style=color:#f92672>*</span> resolution;
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// ii. remap stepCoord in [0.0, resolution] ∈ Z</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// see: https://thebookofshaders.com/glossary/?search=floor</span>
+</span></span><span style=display:flex><span>    stepCoord <span style=color:#f92672>=</span> floor(stepCoord);
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// iii. remap stepCoord in [0.0, 1.0] ∈ R</span>
+</span></span><span style=display:flex><span>    stepCoord <span style=color:#f92672>=</span> stepCoord <span style=color:#f92672>/</span> <span style=color:#66d9ef>vec2</span>(resolution);
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// source texel</span>
+</span></span><span style=display:flex><span>    gl_FragColor <span style=color:#f92672>=</span> texture2D(source, stepCoord);
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// ✨ source texels may be used to compute image palette lookup keys,</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// such as in video &amp; photographic mosaics or ascii art visualizations.</span>
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></div></details><h2 id=average-color-no-spatial-coherence>Average Color (No Spatial Coherence)
+<a class=anchor href=#average-color-no-spatial-coherence>#</a></h2><p>A continuación se muestra la implementación hecha en software (no hardware) de la pixelación que no usa coherencia espacial (elegir arbitrariamente uno de los pixeles de una sección para pintar el pixel de baja resolución de dicha sección), sino que hace un promedio de los colores de los pixeles de toda la sección y así pinta el pixel de baja resolución.</p><p>El usuario debe cargar la imagen manualmente (puede descargar la versión original haciendo click derecho sobre la imagen en la aplicación que usa coherencia espacial y luego subirla aquí). El usuario debe mover el slider si es necesario para que tengan la misma resolución ambas implementaciones para poder comparar.</p><h3 id=controles-1>Controles
+<a class=anchor href=#controles-1>#</a></h3><ul><li><strong>Botón Choose File</strong>: para cargar una imagen o video</li><li><strong>Slider</strong>: define la resolución (por defecto 30, es decir 30 pixeles de baja resolución por cada lado de la cuadrícula). El mínimo valor es 1 y el máximo 150. Una resolución mayor, implica más pixeles, y por tanto, de menor tamaño cada vez. El tamaño de la cuadrícula es de 600px x 600px por lo que una resolución de 150 implica pixeles de baja resolución de dimensiones 4px x 4px.</li></ul><iframe id=average style=width:650px;height:750px srcdoc="
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <script src=https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js></script>
+            <script src=https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/addons/p5.sound.min.js></script>
+            
+            
+            
+            
+            
+            <script src=/VisualComputing/sketches/shaders/SpatialCoherence/average.js></script>
+          </head>
+          <body>
+          </body>
+        </html>
+      "></iframe>
+<details><summary>Sketch Code</summary><div class=markdown-inner><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>mid</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>10</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>w</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>20</span>; <span style=color:#75715e>// pixel width and height: split is in groups of 256 pixels.
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>input</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>img</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>width</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>height</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>resolution</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>function</span> <span style=color:#a6e22e>setup</span>() {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>input</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>createFileInput</span>(<span style=color:#a6e22e>handleFile</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>resolution</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>createSlider</span>(<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>150</span>, <span style=color:#ae81ff>30</span>, <span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>resolution</span>.<span style=color:#a6e22e>position</span>(<span style=color:#ae81ff>100</span>, <span style=color:#ae81ff>10</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>resolution</span>.<span style=color:#a6e22e>style</span>(<span style=color:#e6db74>&#39;width&#39;</span>, <span style=color:#e6db74>&#39;150px&#39;</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>resolution</span>.<span style=color:#a6e22e>input</span>(() =&gt; {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>w</span> <span style=color:#f92672>=</span> Math.<span style=color:#a6e22e>floor</span>(<span style=color:#ae81ff>600</span> <span style=color:#f92672>/</span> <span style=color:#a6e22e>resolution</span>.<span style=color:#a6e22e>value</span>());
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>mid</span> <span style=color:#f92672>=</span> Math.<span style=color:#a6e22e>floor</span>(<span style=color:#a6e22e>w</span> <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span>);
+</span></span><span style=display:flex><span>    });
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>function</span> <span style=color:#a6e22e>draw</span>() {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>img</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>null</span> <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>img</span>.<span style=color:#a6e22e>width</span> <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0</span>) {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>width</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>600</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>height</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>600</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>input</span>.<span style=color:#a6e22e>position</span>(<span style=color:#ae81ff>2</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>width</span>, <span style=color:#ae81ff>0</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>createCanvas</span>(<span style=color:#ae81ff>2</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>width</span>, <span style=color:#a6e22e>height</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>image</span>(<span style=color:#a6e22e>img</span>, <span style=color:#a6e22e>width</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>600</span>, <span style=color:#ae81ff>600</span>);
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>fill</span>(<span style=color:#ae81ff>100</span>);
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>noStroke</span>();
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>let</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> <span style=color:#f92672>&lt;</span> <span style=color:#a6e22e>width</span>; <span style=color:#a6e22e>i</span> <span style=color:#f92672>+=</span> <span style=color:#a6e22e>w</span>)
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>let</span> <span style=color:#a6e22e>j</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>j</span> <span style=color:#f92672>&lt;</span> <span style=color:#a6e22e>height</span>; <span style=color:#a6e22e>j</span> <span style=color:#f92672>+=</span> <span style=color:#a6e22e>w</span>)
+</span></span><span style=display:flex><span>            {
+</span></span><span style=display:flex><span>                <span style=color:#a6e22e>square</span>(<span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>j</span>, <span style=color:#a6e22e>w</span>);
+</span></span><span style=display:flex><span>            } 
+</span></span><span style=display:flex><span>        }   
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>COLORS</span> <span style=color:#f92672>=</span> {}
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>let</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> <span style=color:#f92672>&lt;</span> <span style=color:#a6e22e>width</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span>) {
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>i_</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>width</span>;
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>let</span> <span style=color:#a6e22e>j</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>j</span> <span style=color:#f92672>&lt;</span> <span style=color:#a6e22e>height</span>; <span style=color:#a6e22e>j</span><span style=color:#f92672>++</span>) {
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>color</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>get</span>(<span style=color:#a6e22e>i_</span>, <span style=color:#a6e22e>j</span>);
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>key</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>`</span><span style=color:#e6db74>${</span>Math.<span style=color:#a6e22e>floor</span>(<span style=color:#a6e22e>i</span> <span style=color:#f92672>/</span> <span style=color:#a6e22e>w</span>)<span style=color:#e6db74>}</span><span style=color:#e6db74>-</span><span style=color:#e6db74>${</span>Math.<span style=color:#a6e22e>floor</span>(<span style=color:#a6e22e>j</span> <span style=color:#f92672>/</span> <span style=color:#a6e22e>w</span>)<span style=color:#e6db74>}</span><span style=color:#e6db74>`</span>;
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>COLORS</span>[<span style=color:#a6e22e>key</span>] <span style=color:#f92672>==</span> <span style=color:#66d9ef>null</span>)
+</span></span><span style=display:flex><span>                    <span style=color:#a6e22e>COLORS</span>[<span style=color:#a6e22e>key</span>] <span style=color:#f92672>=</span> [];
+</span></span><span style=display:flex><span>                <span style=color:#a6e22e>COLORS</span>[<span style=color:#a6e22e>key</span>].<span style=color:#a6e22e>push</span>(<span style=color:#a6e22e>color</span>);
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>key</span> <span style=color:#66d9ef>in</span> <span style=color:#a6e22e>COLORS</span>) {
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>colors</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>COLORS</span>[<span style=color:#a6e22e>key</span>]
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>R</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>G</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>B</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>colors</span>.<span style=color:#a6e22e>forEach</span>((<span style=color:#a6e22e>c</span>) =&gt; {
+</span></span><span style=display:flex><span>                <span style=color:#a6e22e>R</span> <span style=color:#f92672>+=</span> <span style=color:#a6e22e>c</span>[<span style=color:#ae81ff>0</span>];
+</span></span><span style=display:flex><span>                <span style=color:#a6e22e>G</span> <span style=color:#f92672>+=</span> <span style=color:#a6e22e>c</span>[<span style=color:#ae81ff>1</span>];
+</span></span><span style=display:flex><span>                <span style=color:#a6e22e>B</span> <span style=color:#f92672>+=</span> <span style=color:#a6e22e>c</span>[<span style=color:#ae81ff>2</span>];
+</span></span><span style=display:flex><span>            })
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>COLORS</span>[<span style=color:#a6e22e>key</span>] <span style=color:#f92672>=</span> [Math.<span style=color:#a6e22e>floor</span>(<span style=color:#a6e22e>R</span> <span style=color:#f92672>/</span> <span style=color:#a6e22e>w</span><span style=color:#f92672>**</span><span style=color:#ae81ff>2</span>), Math.<span style=color:#a6e22e>floor</span>(<span style=color:#a6e22e>G</span> <span style=color:#f92672>/</span> <span style=color:#a6e22e>w</span><span style=color:#f92672>**</span><span style=color:#ae81ff>2</span>), Math.<span style=color:#a6e22e>floor</span>(<span style=color:#a6e22e>B</span> <span style=color:#f92672>/</span> <span style=color:#a6e22e>w</span><span style=color:#f92672>**</span><span style=color:#ae81ff>2</span>)]
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>key</span> <span style=color:#66d9ef>in</span> <span style=color:#a6e22e>COLORS</span>) {
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>fill</span>(<span style=color:#a6e22e>COLORS</span>[<span style=color:#a6e22e>key</span>])
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>x</span> <span style=color:#f92672>=</span> parseInt(<span style=color:#a6e22e>key</span>.<span style=color:#a6e22e>split</span>(<span style=color:#e6db74>&#39;-&#39;</span>)[<span style=color:#ae81ff>0</span>])
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>y</span> <span style=color:#f92672>=</span> parseInt(<span style=color:#a6e22e>key</span>.<span style=color:#a6e22e>split</span>(<span style=color:#e6db74>&#39;-&#39;</span>)[<span style=color:#ae81ff>1</span>])
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>square</span>(<span style=color:#a6e22e>x</span><span style=color:#f92672>*</span><span style=color:#a6e22e>w</span>, <span style=color:#a6e22e>y</span><span style=color:#f92672>*</span><span style=color:#a6e22e>w</span>, <span style=color:#a6e22e>w</span>);
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>function</span> <span style=color:#a6e22e>handleFile</span>(<span style=color:#a6e22e>file</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>file</span>.<span style=color:#a6e22e>type</span> <span style=color:#f92672>===</span> <span style=color:#e6db74>&#39;image&#39;</span>) {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>img</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>createImg</span>(<span style=color:#a6e22e>file</span>.<span style=color:#a6e22e>data</span>, <span style=color:#e6db74>&#39;&#39;</span>);
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>img</span>.<span style=color:#a6e22e>hide</span>();
+</span></span><span style=display:flex><span>    } <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>img</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>null</span>;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span></code></pre></div></div></details></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div><a class="flex align-center" href=https://github.com/anfbalceroce/VisualComputing/commit/4898565fdba08df62489cb0fa036df29826552c6 title='Last modified by Diego Quintero | November 28, 2022' target=_blank rel=noopener><img src=/VisualComputing/svg/calendar.svg class=book-icon alt=Calendar>
+<span>November 28, 2022</span></a></div></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><ul><li><a href=#exercise>Exercise</a></li><li><a href=#spatial-coherence>Spatial Coherence</a><ul><li><a href=#controles>Controles</a></li></ul></li><li><a href=#dataset>Dataset</a></li><li><a href=#average-color-no-spatial-coherence>Average Color (No Spatial Coherence)</a><ul><li><a href=#controles-1>Controles</a></li></ul></li></ul></li></ul></nav></div></aside></main></body></html>

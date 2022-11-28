@@ -1,0 +1,284 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Exercise # Adapt other patterns from the book of shaders (refer also to the shadertoy collection) and map them as textures onto other 3D shapes.
+Procedural Texturing # En este ejercicio, se implementaron dos patrones. Uno tomado de The Book of Shaders: Random llamado Mosaic y otro tomado de generative art deco 4 (Shadertoy) y que aplica el concepto de Chromatic aberration.
+Por defecto se mostrará este segundo shader sobre un conjunto de conos generados aleatoriamente y que se mueven cíclicamente por el espacio (mod 400) mientras rotan."><meta name=theme-color content="#FFFFFF"><meta name=color-scheme content="light dark"><meta property="og:title" content="Procedural Texturing"><meta property="og:description" content="Exercise # Adapt other patterns from the book of shaders (refer also to the shadertoy collection) and map them as textures onto other 3D shapes.
+Procedural Texturing # En este ejercicio, se implementaron dos patrones. Uno tomado de The Book of Shaders: Random llamado Mosaic y otro tomado de generative art deco 4 (Shadertoy) y que aplica el concepto de Chromatic aberration.
+Por defecto se mostrará este segundo shader sobre un conjunto de conos generados aleatoriamente y que se mueven cíclicamente por el espacio (mod 400) mientras rotan."><meta property="og:type" content="article"><meta property="og:url" content="https://anfbalceroce.github.io/VisualComputing/docs/shaders/ProceduralTexturing/"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2022-11-27T21:20:29-05:00"><title>Procedural Texturing | Visual Computing 2022-2</title><link rel=manifest href=/VisualComputing/manifest.json><link rel=icon href=/VisualComputing/favicon.png type=image/x-icon><link rel=stylesheet href=/VisualComputing/book.min.ab46de3e725a6415339a37bba23a0067534a37289b063c9f8d011515a63097a8.css integrity="sha256-q0bePnJaZBUzmje7ojoAZ1NKNyibBjyfjQEVFaYwl6g=" crossorigin=anonymous><script defer src=/VisualComputing/flexsearch.min.js></script>
+<script defer src=/VisualComputing/en.search.min.46ba94204fa987db528e63a04561de9568e07dd15bc29dc8ebe766b98d29a190.js integrity="sha256-RrqUIE+ph9tSjmOgRWHelWjgfdFbwp3I6+dmuY0poZA=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/VisualComputing/><span>Visual Computing 2022-2</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li class=book-section-flat><span>Taller 1</span><ul><li><a href=/VisualComputing/docs/taller-1/ilusiones/>Ilusiones</a></li><li><a href=/VisualComputing/docs/taller-1/convolucion/>Convolución</a></li></ul></li><li class=book-section-flat><span>Taller 2</span><ul><li><a href=/VisualComputing/docs/taller-2/camaras/>Múltiples Cámaras</a></li><li><a href=/VisualComputing/docs/taller-2/W2_Optional/>Ejercicio Opcional</a></li></ul></li><li class=book-section-flat><span>Shaders</span><ul><li><a href=/VisualComputing/docs/shaders/coloring/>Color Shader</a></li><li><a href=/VisualComputing/docs/shaders/texturing/>Texture Mapping Shader</a></li><li><a href=/VisualComputing/docs/shaders/image_processing/>Image processing</a></li><li><a href=/VisualComputing/docs/shaders/ImageProcessing/>Image Processing</a></li><li><a href=/VisualComputing/docs/shaders/procedural_texturing/>Procedural texturing</a></li><li><a href=/VisualComputing/docs/shaders/ProceduralTexturing/ class=active>Procedural Texturing</a></li><li><a href=/VisualComputing/docs/shaders/non-euclidean_geometry/>Non-Euclidean geometry</a></li><li><a href=/VisualComputing/docs/shaders/SpatialCoherence/>Spatial Coherence</a></li><li><a href=/VisualComputing/docs/shaders/spatial_coherence/>Spatial coherence</a></li><li><a href=/VisualComputing/docs/shaders/photomosaic/>Photomosaic</a></li><li><a href=/VisualComputing/docs/shaders/lighting/>Lighting</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/VisualComputing/svg/menu.svg class=book-icon alt=Menu></label>
+<strong>Procedural Texturing</strong>
+<label for=toc-control><img src=/VisualComputing/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><ul><li><a href=#exercise>Exercise</a></li><li><a href=#procedural-texturing>Procedural Texturing</a><ul><li><a href=#controles>Controles</a></li></ul></li></ul></li></ul></nav></aside></header><article class=markdown><h2 id=exercise>Exercise
+<a class=anchor href=#exercise>#</a></h2><p>Adapt other patterns from the book of shaders (refer also to the shadertoy collection) and map them as textures onto other 3D shapes.</p><h2 id=procedural-texturing>Procedural Texturing
+<a class=anchor href=#procedural-texturing>#</a></h2><p>En este ejercicio, se implementaron dos patrones. Uno tomado de <a href="https://thebookofshaders.com/10/?lan=es">The Book of Shaders: Random</a> llamado Mosaic y otro tomado de <a href=https://www.shadertoy.com/view/mds3DX>generative art deco 4 (Shadertoy)</a> y que aplica el concepto de <a href=https://en.wikipedia.org/wiki/Chromatic_aberration>Chromatic aberration</a>.</p><p>Por defecto se mostrará este segundo shader sobre un conjunto de conos generados aleatoriamente y que se mueven cíclicamente por el espacio (mod 400) mientras rotan.</p><p>Si el usuario selecciona mosaic del selector de shaders, los objetos se transforman en esferas y se aplica la textura procedimental mosaic.</p><h3 id=controles>Controles
+<a class=anchor href=#controles>#</a></h3><ul><li><strong>Select</strong>: selecciona el shader de textura procedimental que desea visualizar</li></ul><iframe id=protexturing style=width:550px;height:550px srcdoc="
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <script src=https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js></script>
+            <script src=https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/addons/p5.sound.min.js></script>
+             <script src=https://cdn.jsdelivr.net/gh/VisualComputing/p5.treegl/p5.treegl.js></script> 
+             <script src=https://cdn.jsdelivr.net/gh/freshfork/p5.EasyCam@1.2.1/p5.easycam.js></script> 
+            
+            
+            
+            <script src=/VisualComputing/sketches/shaders/ProceduralTexturing/protexturing.js></script>
+          </head>
+          <body>
+          </body>
+        </html>
+      "></iframe>
+<details><summary>Sketch Code</summary><div class=markdown-inner><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>angle</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>positions</span> <span style=color:#f92672>=</span> []; <span style=color:#75715e>// will contain objects 3D positions
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>easycam</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>P</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>pg</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>cabberShader</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>mosaicShader</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>texselect</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>tex</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>function</span> <span style=color:#a6e22e>preload</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>cabberShader</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>readShader</span>(<span style=color:#e6db74>&#39;/VisualComputing/docs/shaders/fragments/cabber.frag&#39;</span>, { <span style=color:#a6e22e>matrices</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>Tree</span>.<span style=color:#a6e22e>NONE</span>, <span style=color:#a6e22e>varyings</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>Tree</span>.<span style=color:#a6e22e>NONE</span> });
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>mosaicShader</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>readShader</span>(<span style=color:#e6db74>&#39;/VisualComputing/docs/shaders/fragments/mosaic.frag&#39;</span>, { <span style=color:#a6e22e>matrices</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>Tree</span>.<span style=color:#a6e22e>NONE</span>, <span style=color:#a6e22e>varyings</span><span style=color:#f92672>:</span> <span style=color:#a6e22e>Tree</span>.<span style=color:#a6e22e>NONE</span> });
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>function</span> <span style=color:#a6e22e>setup</span>() {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>createCanvas</span>(<span style=color:#ae81ff>500</span>, <span style=color:#ae81ff>500</span>, <span style=color:#a6e22e>WEBGL</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>pg</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>createGraphics</span>(<span style=color:#ae81ff>400</span>, <span style=color:#ae81ff>400</span>, <span style=color:#a6e22e>WEBGL</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>textureMode</span>(<span style=color:#a6e22e>NORMAL</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>noStroke</span>();
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>pg</span>.<span style=color:#a6e22e>noStroke</span>();
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>pg</span>.<span style=color:#a6e22e>textureMode</span>(<span style=color:#a6e22e>NORMAL</span>);
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>easycam</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>createEasyCam</span>();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>state</span> <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>distance</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>600</span>,           
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>center</span><span style=color:#f92672>:</span> [<span style=color:#ae81ff>200</span>, <span style=color:#ae81ff>200</span>, <span style=color:#ae81ff>200</span>],       
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>rotation</span><span style=color:#f92672>:</span> [<span style=color:#ae81ff>1</span>, <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>],
+</span></span><span style=display:flex><span>  };
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>easycam</span>.<span style=color:#a6e22e>setState</span>(<span style=color:#a6e22e>state</span>, <span style=color:#ae81ff>1000</span>);
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#75715e>// 50 objects are placed throughout the space with random positions.
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>let</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>30</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>x</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>randomint</span>(<span style=color:#f92672>-</span><span style=color:#ae81ff>400</span>, <span style=color:#ae81ff>400</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>y</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>randomint</span>(<span style=color:#f92672>-</span><span style=color:#ae81ff>400</span>, <span style=color:#ae81ff>400</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>z</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>randomint</span>(<span style=color:#f92672>-</span><span style=color:#ae81ff>400</span>, <span style=color:#ae81ff>400</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>positions</span>.<span style=color:#a6e22e>push</span>([<span style=color:#a6e22e>x</span>, <span style=color:#a6e22e>y</span>, <span style=color:#a6e22e>z</span>]);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>texselect</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>createSelect</span>();
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>texselect</span>.<span style=color:#a6e22e>position</span>(<span style=color:#ae81ff>10</span>, <span style=color:#ae81ff>10</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>texselect</span>.<span style=color:#a6e22e>option</span>(<span style=color:#e6db74>&#39;cabber&#39;</span>, <span style=color:#ae81ff>0</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>texselect</span>.<span style=color:#a6e22e>option</span>(<span style=color:#e6db74>&#39;mosaic&#39;</span>, <span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>texselect</span>.<span style=color:#a6e22e>selected</span>(<span style=color:#e6db74>&#39;cabber&#39;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>function</span> <span style=color:#a6e22e>draw</span>() {
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>tex</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>texselect</span>.<span style=color:#a6e22e>value</span>();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>background</span>(<span style=color:#ae81ff>0</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>P</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>easycam</span>.<span style=color:#a6e22e>getPosition</span>();
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>size</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>50</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>ssize</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>300</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>chromabber</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0.01</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>let</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; <span style=color:#a6e22e>i</span> <span style=color:#f92672>&lt;</span> <span style=color:#a6e22e>positions</span>.<span style=color:#a6e22e>length</span>; <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>cabberShader</span>.<span style=color:#a6e22e>setUniform</span>(<span style=color:#e6db74>&#39;SHAPE_SIZE&#39;</span>, <span style=color:#a6e22e>ssize</span><span style=color:#f92672>/</span><span style=color:#ae81ff>1000</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>cabberShader</span>.<span style=color:#a6e22e>setUniform</span>(<span style=color:#e6db74>&#39;CHROMATIC_ABBERATION&#39;</span>, <span style=color:#a6e22e>chromabber</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>cabberShader</span>.<span style=color:#a6e22e>setUniform</span>(<span style=color:#e6db74>&#39;u_time&#39;</span>, <span style=color:#a6e22e>frameCount</span> <span style=color:#f92672>*</span> <span style=color:#ae81ff>0.1</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>mosaicShader</span>.<span style=color:#a6e22e>setUniform</span>(<span style=color:#e6db74>&#39;u_time&#39;</span>, <span style=color:#a6e22e>frameCount</span> <span style=color:#f92672>*</span> <span style=color:#ae81ff>0.1</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>pg</span>.<span style=color:#a6e22e>emitResolution</span>(<span style=color:#a6e22e>cabberShader</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>pg</span>.<span style=color:#a6e22e>emitResolution</span>(<span style=color:#a6e22e>mosaicShader</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>tex</span> <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>pg</span>.<span style=color:#a6e22e>shader</span>(<span style=color:#a6e22e>cabberShader</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>tex</span> <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>pg</span>.<span style=color:#a6e22e>shader</span>(<span style=color:#a6e22e>mosaicShader</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>pg</span>.<span style=color:#a6e22e>quad</span>(<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>, <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>texture</span>(<span style=color:#a6e22e>pg</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>push</span>();
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>positions</span>[<span style=color:#a6e22e>i</span>][<span style=color:#ae81ff>0</span>] <span style=color:#f92672>=</span> (<span style=color:#a6e22e>positions</span>[<span style=color:#a6e22e>i</span>][<span style=color:#ae81ff>0</span>] <span style=color:#f92672>+</span> <span style=color:#ae81ff>2</span>) <span style=color:#f92672>%</span> <span style=color:#ae81ff>400</span>;
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>positions</span>[<span style=color:#a6e22e>i</span>][<span style=color:#ae81ff>1</span>] <span style=color:#f92672>=</span> (<span style=color:#a6e22e>positions</span>[<span style=color:#a6e22e>i</span>][<span style=color:#ae81ff>1</span>] <span style=color:#f92672>+</span> <span style=color:#ae81ff>2</span>) <span style=color:#f92672>%</span> <span style=color:#ae81ff>400</span>;
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>positions</span>[<span style=color:#a6e22e>i</span>][<span style=color:#ae81ff>2</span>] <span style=color:#f92672>=</span> (<span style=color:#a6e22e>positions</span>[<span style=color:#a6e22e>i</span>][<span style=color:#ae81ff>2</span>] <span style=color:#f92672>+</span> <span style=color:#ae81ff>2</span>) <span style=color:#f92672>%</span> <span style=color:#ae81ff>400</span>;
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>translate</span>(<span style=color:#a6e22e>positions</span>[<span style=color:#a6e22e>i</span>][<span style=color:#ae81ff>0</span>], <span style=color:#a6e22e>positions</span>[<span style=color:#a6e22e>i</span>][<span style=color:#ae81ff>1</span>], <span style=color:#a6e22e>positions</span>[<span style=color:#a6e22e>i</span>][<span style=color:#ae81ff>2</span>]); <span style=color:#75715e>// with push and pop, translation and rotation of each object is independent of each other.
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>rotateX</span>(<span style=color:#a6e22e>angle</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>rotateY</span>(<span style=color:#a6e22e>angle</span> <span style=color:#f92672>*</span> <span style=color:#ae81ff>0.4</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>tex</span> <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>cone</span>(<span style=color:#a6e22e>size</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>tex</span> <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>sphere</span>(<span style=color:#a6e22e>size</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>pop</span>();
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>ssize</span> <span style=color:#f92672>+=</span> <span style=color:#ae81ff>20</span>;
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>size</span> <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>chromabber</span> <span style=color:#f92672>+=</span> <span style=color:#ae81ff>0.002</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>tex</span> <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>angle</span> <span style=color:#f92672>+=</span> <span style=color:#ae81ff>0.001</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>function</span> <span style=color:#a6e22e>randomint</span>(<span style=color:#a6e22e>min</span>, <span style=color:#a6e22e>max</span>) {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>min</span> <span style=color:#f92672>=</span> Math.<span style=color:#a6e22e>ceil</span>(<span style=color:#a6e22e>min</span>);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>max</span> <span style=color:#f92672>=</span> Math.<span style=color:#a6e22e>floor</span>(<span style=color:#a6e22e>max</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> Math.<span style=color:#a6e22e>floor</span>(Math.<span style=color:#a6e22e>random</span>() <span style=color:#f92672>*</span> (<span style=color:#a6e22e>max</span> <span style=color:#f92672>-</span> <span style=color:#a6e22e>min</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>) <span style=color:#f92672>+</span> <span style=color:#a6e22e>min</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></div></details><details><summary>Mosaic Shader Code</summary><div class=markdown-inner><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-glsl data-lang=glsl><span style=display:flex><span><span style=color:#75715e>// Author @patriciogv - 2015</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// Title: Mosaic</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#ifdef GL_ES</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>precision</span> <span style=color:#66d9ef>mediump</span> <span style=color:#66d9ef>float</span>;
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>uniform</span> <span style=color:#66d9ef>vec2</span> u_resolution;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>uniform</span> <span style=color:#66d9ef>vec2</span> u_mouse;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>uniform</span> <span style=color:#66d9ef>float</span> u_time;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> random (<span style=color:#66d9ef>vec2</span> st) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> fract(sin(dot(st.xy,
+</span></span><span style=display:flex><span>                         <span style=color:#66d9ef>vec2</span>(<span style=color:#ae81ff>12.9898</span>,<span style=color:#ae81ff>78.233</span>)))<span style=color:#f92672>*</span>
+</span></span><span style=display:flex><span>        <span style=color:#ae81ff>43758.5453123</span>);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> main() {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>vec2</span> st <span style=color:#f92672>=</span> gl_FragCoord.xy<span style=color:#f92672>/</span>u_resolution.xy;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    st <span style=color:#f92672>*=</span> <span style=color:#ae81ff>10.0</span>; <span style=color:#75715e>// Scale the coordinate system by 10</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>vec2</span> ipos <span style=color:#f92672>=</span> floor(st);  <span style=color:#75715e>// get the integer coords</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>vec2</span> fpos <span style=color:#f92672>=</span> fract(st);  <span style=color:#75715e>// get the fractional coords</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// Assign a random value based on the integer coord</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>vec3</span> color <span style=color:#f92672>=</span> <span style=color:#66d9ef>vec3</span>(random( ipos ));
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// Uncomment to see the subdivided grid</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// color = vec3(fpos,0.0);</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    gl_FragColor <span style=color:#f92672>=</span> <span style=color:#66d9ef>vec4</span>(color,<span style=color:#ae81ff>1.0</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></div></details><details><summary>Chromatic Abberration Shader Code</summary><div class=markdown-inner><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-glsl data-lang=glsl><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// Fork of &#34;generative art deco 3&#34; by morisil. https://shadertoy.com/view/mdl3WX</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 2022-10-28 00:47:55</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// Fork of &#34;generative art deco 2&#34; by morisil. https://shadertoy.com/view/ftVBDz</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 2022-10-27 22:34:54</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// Fork of &#34;generative art deco&#34; by morisil. https://shadertoy.com/view/7sKfDd</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 2022-09-28 11:25:15</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// Copyright Kazimierz Pogoda, 2022 - https://xemantic.com/</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// I am the sole copyright owner of this Work.</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// You cannot host, display, distribute or share this Work in any form,</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// including physical and digital. You cannot use this Work in any</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// commercial or non-commercial product, website or project. You cannot</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// sell this Work and you cannot mint an NFTs of it.</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// I share this Work for educational purposes, and you can link to it,</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// through an URL, proper attribution and unmodified screenshot, as part</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// of your educational material. If these conditions are too restrictive</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// please contact me and we&#39;ll definitely work it out.</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// copyright statement borrowed from Inigo Quilez</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// Music by Giovanni Sollima, L&#39;invenzione del nero:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// https://soundcloud.com/giovanni-sollima/linvenzione-del-nero</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// See also The Mathematics of Perception to check the ideas behind:</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// https://www.shadertoy.com/view/7sVBzK</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>precision</span> <span style=color:#66d9ef>mediump</span> <span style=color:#66d9ef>float</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>uniform</span> <span style=color:#66d9ef>float</span> SHAPE_SIZE;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>uniform</span> <span style=color:#66d9ef>float</span> CHROMATIC_ABBERATION;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#66d9ef>float</span> ITERATIONS <span style=color:#f92672>=</span> <span style=color:#ae81ff>10.</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#66d9ef>float</span> INITIAL_LUMA <span style=color:#f92672>=</span> <span style=color:#ae81ff>.5</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>uniform</span> <span style=color:#66d9ef>vec2</span> u_resolution;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>uniform</span> <span style=color:#66d9ef>float</span> u_time;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#66d9ef>float</span> PI <span style=color:#f92672>=</span> <span style=color:#ae81ff>3.14159265359</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#66d9ef>float</span> TWO_PI <span style=color:#f92672>=</span> <span style=color:#ae81ff>6.28318530718</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>mat2</span> rotate2d(<span style=color:#66d9ef>float</span> _angle){
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>mat2</span>(cos(_angle),<span style=color:#f92672>-</span>sin(_angle),
+</span></span><span style=display:flex><span>                sin(_angle),cos(_angle));
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> sdPolygon( <span style=color:#66d9ef>float</span> angle,  <span style=color:#66d9ef>float</span> distance) {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>float</span> segment <span style=color:#f92672>=</span> TWO_PI <span style=color:#f92672>/</span> <span style=color:#ae81ff>4.0</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> cos(floor(<span style=color:#ae81ff>.5</span> <span style=color:#f92672>+</span> angle <span style=color:#f92672>/</span> segment) <span style=color:#f92672>*</span> segment <span style=color:#f92672>-</span> angle) <span style=color:#f92672>*</span> distance;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> random(<span style=color:#66d9ef>vec2</span> st) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> fract(sin(dot(st.xy,
+</span></span><span style=display:flex><span>                         <span style=color:#66d9ef>vec2</span>(<span style=color:#ae81ff>12.9898</span>,<span style=color:#ae81ff>78.233</span>)))<span style=color:#f92672>*</span>
+</span></span><span style=display:flex><span>        <span style=color:#ae81ff>43758.5453123</span>);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>float</span> getColorComponent( <span style=color:#66d9ef>vec2</span> st, <span style=color:#66d9ef>float</span> modScale,  <span style=color:#66d9ef>float</span> blur) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>vec2</span> modSt <span style=color:#f92672>=</span> mod(st, <span style=color:#ae81ff>1.</span> <span style=color:#f92672>/</span> modScale) <span style=color:#f92672>*</span> modScale <span style=color:#f92672>*</span> <span style=color:#ae81ff>2.</span> <span style=color:#f92672>-</span> <span style=color:#ae81ff>1.</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>float</span> dist <span style=color:#f92672>=</span> length(modSt);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>float</span> angle <span style=color:#f92672>=</span> atan(modSt.x, modSt.y) <span style=color:#f92672>+</span> sin(u_time <span style=color:#f92672>*</span> <span style=color:#ae81ff>.08</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>9.0</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>float</span> shapeMap <span style=color:#f92672>=</span> smoothstep(SHAPE_SIZE <span style=color:#f92672>+</span> blur, SHAPE_SIZE <span style=color:#f92672>-</span> blur, sin(dist <span style=color:#f92672>*</span> <span style=color:#ae81ff>3.0</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>.5</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>.5</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> shapeMap;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> main() {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>vec2</span> st <span style=color:#f92672>=</span>
+</span></span><span style=display:flex><span>        (<span style=color:#ae81ff>2.</span><span style=color:#f92672>*</span> gl_FragCoord.xy <span style=color:#f92672>-</span> u_resolution)
+</span></span><span style=display:flex><span>        <span style=color:#f92672>/</span> min(u_resolution.x, u_resolution.y);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>vec2</span> origSt <span style=color:#f92672>=</span> st;
+</span></span><span style=display:flex><span>    st <span style=color:#f92672>*=</span> rotate2d(sin(u_time <span style=color:#f92672>*</span> <span style=color:#ae81ff>.14</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>.3</span>);
+</span></span><span style=display:flex><span>    st <span style=color:#f92672>*=</span> (sin(u_time <span style=color:#f92672>*</span> <span style=color:#ae81ff>.15</span>) <span style=color:#f92672>+</span> <span style=color:#ae81ff>2.</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>.3</span>;
+</span></span><span style=display:flex><span>    st <span style=color:#f92672>*=</span> log(length(st <span style=color:#f92672>*</span> <span style=color:#ae81ff>.428</span>)) <span style=color:#f92672>*</span> <span style=color:#ae81ff>1.1</span>;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>float</span> blur <span style=color:#f92672>=</span> <span style=color:#ae81ff>.4</span> <span style=color:#f92672>+</span> sin(u_time <span style=color:#f92672>*</span> <span style=color:#ae81ff>.52</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>.2</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>float</span> modScale <span style=color:#f92672>=</span> <span style=color:#ae81ff>1.</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>vec3</span> color <span style=color:#f92672>=</span> <span style=color:#66d9ef>vec3</span>(<span style=color:#ae81ff>0</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>float</span> luma <span style=color:#f92672>=</span> INITIAL_LUMA;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>float</span> i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0.</span>; i <span style=color:#f92672>&lt;</span> ITERATIONS; i<span style=color:#f92672>++</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>vec2</span> center <span style=color:#f92672>=</span> st <span style=color:#f92672>+</span> <span style=color:#66d9ef>vec2</span>(sin(u_time <span style=color:#f92672>*</span> <span style=color:#ae81ff>.12</span>), cos(u_time <span style=color:#f92672>*</span> <span style=color:#ae81ff>.13</span>));
+</span></span><span style=display:flex><span>        <span style=color:#75715e>//center += pow(length(center), 1.);</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>vec3</span> shapeColor <span style=color:#f92672>=</span> <span style=color:#66d9ef>vec3</span>(
+</span></span><span style=display:flex><span>            getColorComponent(center <span style=color:#f92672>-</span> st <span style=color:#f92672>*</span> CHROMATIC_ABBERATION, modScale, blur),
+</span></span><span style=display:flex><span>            getColorComponent(center, modScale, blur),
+</span></span><span style=display:flex><span>            getColorComponent(center <span style=color:#f92672>+</span> st <span style=color:#f92672>*</span> CHROMATIC_ABBERATION, modScale, blur)        
+</span></span><span style=display:flex><span>        ) <span style=color:#f92672>*</span> luma;
+</span></span><span style=display:flex><span>        st <span style=color:#f92672>*=</span> <span style=color:#ae81ff>1.1</span> <span style=color:#f92672>+</span> getColorComponent(center, modScale, <span style=color:#ae81ff>.04</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>1.2</span>;
+</span></span><span style=display:flex><span>        st <span style=color:#f92672>*=</span> rotate2d(sin(u_time  <span style=color:#f92672>*</span> <span style=color:#ae81ff>.05</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>1.33</span>);
+</span></span><span style=display:flex><span>        color <span style=color:#f92672>+=</span> shapeColor;
+</span></span><span style=display:flex><span>        color <span style=color:#f92672>=</span> clamp(color, <span style=color:#ae81ff>0.</span>, <span style=color:#ae81ff>1.</span>);
+</span></span><span style=display:flex><span><span style=color:#75715e>//        if (color == vec3(1)) break;</span>
+</span></span><span style=display:flex><span>        luma <span style=color:#f92672>*=</span> <span style=color:#ae81ff>.6</span>;
+</span></span><span style=display:flex><span>        blur <span style=color:#f92672>*=</span> <span style=color:#ae81ff>.63</span>;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>float</span> GRADING_INTENSITY <span style=color:#f92672>=</span> <span style=color:#ae81ff>.4</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>vec3</span> topGrading <span style=color:#f92672>=</span> <span style=color:#66d9ef>vec3</span>(
+</span></span><span style=display:flex><span>        <span style=color:#ae81ff>1.</span> <span style=color:#f92672>+</span> sin(u_time <span style=color:#f92672>*</span> <span style=color:#ae81ff>1.13</span> <span style=color:#f92672>*</span> <span style=color:#ae81ff>.3</span>) <span style=color:#f92672>*</span> GRADING_INTENSITY,
+</span></span><span style=display:flex><span>        <span style=color:#ae81ff>1.</span> <span style=color:#f92672>+</span> sin(u_time <span style=color:#f92672>*</span> <span style=color:#ae81ff>1.23</span> <span style=color:#f92672>*</span> <span style=color:#ae81ff>.3</span>) <span style=color:#f92672>*</span> GRADING_INTENSITY,
+</span></span><span style=display:flex><span>        <span style=color:#ae81ff>1.</span> <span style=color:#f92672>-</span> sin(u_time <span style=color:#f92672>*</span> <span style=color:#ae81ff>1.33</span> <span style=color:#f92672>*</span> <span style=color:#ae81ff>.3</span>) <span style=color:#f92672>*</span> GRADING_INTENSITY
+</span></span><span style=display:flex><span>    );
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>vec3</span> bottomGrading <span style=color:#f92672>=</span> <span style=color:#66d9ef>vec3</span>(
+</span></span><span style=display:flex><span>        <span style=color:#ae81ff>1.</span> <span style=color:#f92672>-</span> sin(u_time <span style=color:#f92672>*</span> <span style=color:#ae81ff>1.43</span> <span style=color:#f92672>*</span> <span style=color:#ae81ff>.3</span>) <span style=color:#f92672>*</span> GRADING_INTENSITY,
+</span></span><span style=display:flex><span>        <span style=color:#ae81ff>1.</span> <span style=color:#f92672>-</span> sin(u_time <span style=color:#f92672>*</span> <span style=color:#ae81ff>1.53</span> <span style=color:#f92672>*</span> <span style=color:#ae81ff>.3</span>) <span style=color:#f92672>*</span> GRADING_INTENSITY,
+</span></span><span style=display:flex><span>        <span style=color:#ae81ff>1.</span> <span style=color:#f92672>+</span> sin(u_time <span style=color:#f92672>*</span> <span style=color:#ae81ff>1.63</span> <span style=color:#f92672>*</span> <span style=color:#ae81ff>.3</span>) <span style=color:#f92672>*</span> GRADING_INTENSITY
+</span></span><span style=display:flex><span>    );
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>float</span> origDist <span style=color:#f92672>=</span> length(origSt);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>vec3</span> colorGrading <span style=color:#f92672>=</span> mix(topGrading, bottomGrading, origDist <span style=color:#f92672>-</span> <span style=color:#ae81ff>.5</span>);
+</span></span><span style=display:flex><span>    gl_FragColor <span style=color:#f92672>=</span> <span style=color:#66d9ef>vec4</span>(pow(color.rgb, colorGrading), <span style=color:#ae81ff>1.</span>);
+</span></span><span style=display:flex><span>    gl_FragColor <span style=color:#f92672>*=</span> smoothstep(<span style=color:#ae81ff>2.1</span>, <span style=color:#ae81ff>.7</span>, origDist);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></div></details></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div><a class="flex align-center" href=https://github.com/anfbalceroce/VisualComputing/commit/4898565fdba08df62489cb0fa036df29826552c6 title='Last modified by Diego Quintero | November 28, 2022' target=_blank rel=noopener><img src=/VisualComputing/svg/calendar.svg class=book-icon alt=Calendar>
+<span>November 28, 2022</span></a></div></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><ul><li><a href=#exercise>Exercise</a></li><li><a href=#procedural-texturing>Procedural Texturing</a><ul><li><a href=#controles>Controles</a></li></ul></li></ul></li></ul></nav></div></aside></main></body></html>
