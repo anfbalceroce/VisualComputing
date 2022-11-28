@@ -6,9 +6,11 @@ let ambient;
 let ambientSlider;
 let focos;
 let selectPos;
+let phongExpSlider;
+let attenuationRate;
 
 function preload() {
-  myShader = readShader('/VisualComputing/sketches/Lighting_3copy/ambient.frag', { varyings: Tree.normal3 | Tree.position4 });
+  myShader = readShader('/VisualComputing/sketches/Lighting_4/ambient.frag', { varyings: Tree.normal3 | Tree.position4 });
 }
 
 function setup() {
@@ -73,9 +75,19 @@ function setup() {
     ]);
   });
   
+  phongExpSlider = createSlider(2, 1250, 1, 1);
+  phongExpSlider.position(350, 470);
+  phongExpSlider.input(() => { myShader.setUniform('phongExp', phongExpSlider.value()) });
+
+  attenuationRate = createSlider(0, 0.1, 0.05, 0.001);
+  attenuationRate.position(10, 470);
+  attenuationRate.input(() => { myShader.setUniform('attenuationRate', attenuationRate.value()) });
+  
   shader(myShader);
   myShader.setUniform('ambient', ambientSlider.value());
   myShader.setUniform("lightColor", [1, 1, 1, 1]);
+  myShader.setUniform('phongExp', phongExpSlider.value());
+  myShader.setUniform('attenuationRate', attenuationRate.value());
 }
 
 function draw() {
