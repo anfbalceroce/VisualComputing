@@ -4,8 +4,27 @@ weight: 5
 ---
 
 # Non-Euclidean geometry
+Todo tipo de geometría no euclidiana puede ser implementado creando un vinculo entre diferentes partes del espacio 3D en el que comparten el mismo punto de vista.
 
-# Marco teórico 
+## ¿Cómo se hace?
+Todas las figuras se renderizan primero en sus propios objetos buffer p5.Graphics fuera de la pantalla utilizando el mismo punto de vista. Los n búferes obtenidos se mapean en las n caras del lienzo principal utilizando un shader personalizado, de nuevo desde el mismo punto de vista.
+
+{{<details "Shader">}}
+``` 
+precision mediump float;
+
+
+uniform sampler2D texture;
+uniform vec2 u_resolution;
+// uniformes definidos en non_euclidean.js
+
+void main() {
+  vec2 st = gl_FragCoord.xy / u_resolution;
+  gl_FragColor = texture2D(texture, vec2(st.s, 1.0 - st.t)); //Book of Shaders (03-04)
+}
+```
+{{</details >}}
+
 
 # Ejercicio
 {{< p5-iframe sketch="/VisualComputing/sketches/Non_Euclid/non_euclidean.js" lib1="https://freshfork.github.io/p5.EasyCam/p5.easycam.js" lib2="https://cdn.jsdelivr.net/gh/VisualComputing/p5.treegl/p5.treegl.js"
@@ -457,3 +476,8 @@ function octahedron(){
   }
 ```
 {{</details >}}
+
+## Referencias
+
+ 1) "The Book of Shaders", https://thebookofshaders.com/08/, Patricio Gonzalez Vivo
+ 2) "Encyclopedia of Mathematics", https://encyclopediaofmath.org/wiki/Platonic_solids
