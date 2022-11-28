@@ -8,13 +8,10 @@ weight: 5
 # Marco teórico 
 
 # Ejercicio
-{{<details "Código">}}
+{{< p5-iframe sketch="/VisualComputing/sketches/Non_Euclid/non_euclidean.js" lib1="https://freshfork.github.io/p5.EasyCam/p5.easycam.js" lib2="https://cdn.jsdelivr.net/gh/VisualComputing/p5.treegl/p5.treegl.js"
+width="575" height="575">}}
 
-{{< p5-iframe sketch="/VisualComputing/sketches/Non_Euclid/non_euclidean.js" lib1="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.js"
-lib2="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/addons/p5.sound.min.js"
-lib3="https://freshfork.github.io/p5.EasyCam/p5.easycam.js"
-lib4="https://cdn.jsdelivr.net/gh/VisualComputing/p5.treegl/p5.treegl.js"
-width="550" height="550">}}
+{{<details "Código">}}
 
 ``` let easycam;
 let edge = 80;
