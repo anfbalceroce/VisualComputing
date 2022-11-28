@@ -1,9 +1,421 @@
-<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content=" Non-Euclidean geometry # Marco teórico # Ejercicio # Código "><meta name=theme-color content="#FFFFFF"><meta name=color-scheme content="light dark"><meta property="og:title" content="Non-Euclidean geometry"><meta property="og:description" content=" Non-Euclidean geometry # Marco teórico # Ejercicio # Código "><meta property="og:type" content="article"><meta property="og:url" content="https://anfbalceroce.github.io/VisualComputing/docs/shaders/non-euclidean_geometry/"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2022-11-26T13:36:18-05:00"><title>Non-Euclidean geometry | Visual Computing 2022-2</title><link rel=manifest href=/VisualComputing/manifest.json><link rel=icon href=/VisualComputing/favicon.png type=image/x-icon><link rel=stylesheet href=/VisualComputing/book.min.ab46de3e725a6415339a37bba23a0067534a37289b063c9f8d011515a63097a8.css integrity="sha256-q0bePnJaZBUzmje7ojoAZ1NKNyibBjyfjQEVFaYwl6g=" crossorigin=anonymous><script defer src=/VisualComputing/flexsearch.min.js></script>
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content=" Non-Euclidean geometry # Marco teórico # Ejercicio # Código "><meta name=theme-color content="#FFFFFF"><meta name=color-scheme content="light dark"><meta property="og:title" content="Non-Euclidean geometry"><meta property="og:description" content=" Non-Euclidean geometry # Marco teórico # Ejercicio # Código "><meta property="og:type" content="article"><meta property="og:url" content="https://anfbalceroce.github.io/VisualComputing/docs/shaders/non-euclidean_geometry/"><meta property="article:section" content="docs"><meta property="article:modified_time" content="2022-11-27T23:58:23-05:00"><title>Non-Euclidean geometry | Visual Computing 2022-2</title><link rel=manifest href=/VisualComputing/manifest.json><link rel=icon href=/VisualComputing/favicon.png type=image/x-icon><link rel=stylesheet href=/VisualComputing/book.min.ab46de3e725a6415339a37bba23a0067534a37289b063c9f8d011515a63097a8.css integrity="sha256-q0bePnJaZBUzmje7ojoAZ1NKNyibBjyfjQEVFaYwl6g=" crossorigin=anonymous><script defer src=/VisualComputing/flexsearch.min.js></script>
 <script defer src=/VisualComputing/en.search.min.fd4ff6d932f724148e7f7a4ce6bab0986111bc76f2455480e5aca22ec0a3944c.js integrity="sha256-/U/22TL3JBSOf3pM5rqwmGERvHbyRVSA5ayiLsCjlEw=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
 <input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/VisualComputing/><span>Visual Computing 2022-2</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li class=book-section-flat><span>Taller 1</span><ul><li><a href=/VisualComputing/docs/taller-1/ilusiones/>Ilusiones</a></li><li><a href=/VisualComputing/docs/taller-1/convolucion/>Convolución</a></li></ul></li><li class=book-section-flat><span>Taller 2</span><ul><li><a href=/VisualComputing/docs/taller-2/camaras/>Múltiples Cámaras</a></li><li><a href=/VisualComputing/docs/taller-2/W2_Optional/>Ejercicio Opcional</a></li></ul></li><li class=book-section-flat><span>Shaders</span><ul><li><a href=/VisualComputing/docs/shaders/coloring/>Coloring</a></li><li><a href=/VisualComputing/docs/shaders/texturing/>Texturing</a></li><li><a href=/VisualComputing/docs/shaders/ImageProcessing/>Image Processing</a></li><li><a href=/VisualComputing/docs/shaders/ProceduralTexturing/>Procedural Texturing</a></li><li><a href=/VisualComputing/docs/shaders/non-euclidean_geometry/ class=active>Non-Euclidean geometry</a></li><li><a href=/VisualComputing/docs/shaders/SpatialCoherence/>Spatial Coherence</a></li><li><a href=/VisualComputing/docs/shaders/photomosaic/>Photomosaic</a></li><li><a href=/VisualComputing/docs/shaders/lighting/>Lighting</a></li></ul></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/VisualComputing/svg/menu.svg class=book-icon alt=Menu></label>
 <strong>Non-Euclidean geometry</strong>
 <label for=toc-control><img src=/VisualComputing/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents><ul><li><a href=#non-euclidean-geometry>Non-Euclidean geometry</a></li><li><a href=#marco-teórico>Marco teórico</a></li><li><a href=#ejercicio>Ejercicio</a></li></ul></nav></aside></header><article class=markdown><h1 id=non-euclidean-geometry>Non-Euclidean geometry
 <a class=anchor href=#non-euclidean-geometry>#</a></h1><h1 id=marco-teórico>Marco teórico
 <a class=anchor href=#marco-te%c3%b3rico>#</a></h1><h1 id=ejercicio>Ejercicio
-<a class=anchor href=#ejercicio>#</a></h1><details><summary>Código</summary><div class=markdown-inner><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-js data-lang=js></code></pre></div></div></details></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div><a class="flex align-center" href=https://github.com/anfbalceroce/VisualComputing/commit/6282b9d325093e4497f5c247bb4daaf76fa8f488 title='Last modified by anfbalceroce | November 26, 2022' target=_blank rel=noopener><img src=/VisualComputing/svg/calendar.svg class=book-icon alt=Calendar>
-<span>November 26, 2022</span></a></div></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#non-euclidean-geometry>Non-Euclidean geometry</a></li><li><a href=#marco-teórico>Marco teórico</a></li><li><a href=#ejercicio>Ejercicio</a></li></ul></nav></div></aside></main></body></html>
+<a class=anchor href=#ejercicio>#</a></h1><details><summary>Código</summary><div class=markdown-inner><iframe id=non_euclidean style=width:550px;height:550px srcdoc='
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <script src=https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js></script>
+            <script src=https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/addons/p5.sound.min.js></script>
+             <script src=https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.js></script> 
+             <script src=https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/addons/p5.sound.min.js></script> 
+             <script src=https://freshfork.github.io/p5.EasyCam/p5.easycam.js></script> 
+             <script src=https://cdn.jsdelivr.net/gh/VisualComputing/p5.treegl/p5.treegl.js></script> 
+<pre><code>        <script src=/VisualComputing/sketches/Non_Euclid/non_euclidean.js></script>
+      </head>
+      <body>
+      </body>
+    </html>
+  "
+</code></pre>
+<blockquote>
+</iframe>
+</blockquote>
+<pre tabindex=' 0"><code class=language-let data-lang=let>let edge = 80;
+let button1, button2, button3;
+let use = 1;
+let bedge = 160;
+let oedge = 100;
+let oredge = oedge * Math.sqrt(3);
+let arrow;
+let arrowTex;
+let bee;
+let beeTex;
+let tiger;
+let tigerTex;
+let tree;
+let treeTex;
+let penguin;
+let penguinTex;
+let fish;
+let fishTex;
+let crown;
+let crowTex;
+let tower;
+let towerTex;
+let texShader;
+function preload() {
+// no varyings need to be emitted from the vertex shader
+texShader = readShader('/VisualComputing/sketches/Non_Euclid/non_euclidean.frag',
+{ varyings: Tree.NONE });
+arrow = loadModel('/VisualComputing/sketches/non_euclid_obj/arrow_heart.obj', true);
+bee = loadModel('/VisualComputing/sketches/non_euclid_obj/bee.obj', true);
+tiger = loadModel('/VisualComputing/sketches/non_euclid_obj/tiger_tank.obj', true);
+tree = loadModel('/VisualComputing/sketches/non_euclid_obj/tree.obj', true);
+penguin = loadModel('/VisualComputing/sketches/non_euclid_obj/penguin.obj', true);
+fish = loadModel('/VisualComputing/sketches/non_euclid_obj/fish.obj', true);
+tower = loadModel('/VisualComputing/sketches/non_euclid_obj/eiffel_tower.obj', true);
+crow = loadModel('/VisualComputing/sketches/non_euclid_obj/crow.obj', true);
+}
+function setup() {
+createCanvas(400, 400, WEBGL);
+// no need to normalize the texture
+// textureMode(NORMAL);
+// Make buttons
+button1 = createButton('Cube');
+button2 = createButton('Pyramid');
+button3 = createButton('Octahedron');
+button1.mousePressed(showCube);
+button2.mousePressed(showPyramid);
+button3.mousePressed(showOctahedron);
+button1.position(10,10);
+button2.position(10+button1.width,10);
+button3.position(10+button1.width+button2.width,10);
+shader(texShader);
+// resolution will be used to sample the offscreen textures
+emitResolution(texShader);
+easycam = createEasyCam();
+// teapotTex = createGraphics(width, height, WEBGL);
+// bunnyTex = createGraphics(width, height, WEBGL);
+arrowTex = createGraphics(width, height, WEBGL);
+beeTex = createGraphics(width, height, WEBGL);
+tigerTex = createGraphics(width, height, WEBGL);
+treeTex = createGraphics(width, height, WEBGL);
+penguinTex = createGraphics(width, height, WEBGL);
+fishTex = createGraphics(width, height, WEBGL);
+crowTex = createGraphics(width, height, WEBGL);
+towerTex = createGraphics(width, height, WEBGL);
+}
+function draw() {
+// 1. compute current main canvas camera params
+let position = treeLocation();
+let center = p5.Vector.add(position, treeDisplacement());
+let up = treeDisplacement(Tree.j);
+// in case the current camera projection params are needed check:
+// https://github.com/VisualComputing/p5.treegl#frustum-queries
+// 2. offscreen rendering
+// bunny graphics
+// bunnyTex.background(200);
+// bunnyTex.reset();
+// bunnyTex.camera(position.x, position.y, position.z,
+// center.x, center.y, center.z,
+// up.x, up.y, up.z);
+// bunnyTex.push();
+// bunnyTex.noStroke();
+// bunnyTex.fill('red');
+// // most models use positive y-coordinates
+// bunnyTex.scale(1, -1);
+// bunnyTex.scale(0.8);// only bunny
+// bunnyTex.model(bunny);
+// bunnyTex.pop();
+// teapot graphics
+// teapotTex.background(200);
+// teapotTex.reset();
+// teapotTex.camera(position.x, position.y, position.z,
+// center.x, center.y, center.z,
+// up.x, up.y, up.z);
+// teapotTex.push();
+// teapotTex.noStroke();
+// teapotTex.fill('blue');
+// teapotTex.scale(1, -1);
+// teapotTex.model(teapot);
+// teapotTex.pop();
+// 1-arrow graphics
+arrowTex.background(200);
+arrowTex.reset();
+arrowTex.camera(position.x, position.y, position.z,
+center.x, center.y, center.z,
+up.x, up.y, up.z);
+arrowTex.push();
+arrowTex.noStroke();
+arrowTex.fill('#E91E63');
+// most models use positive y-coordinates
+arrowTex.scale(1, -1);
+arrowTex.scale(0.5);
+arrowTex.model(arrow);
+arrowTex.pop();
+// 2-bee graphics
+beeTex.background(200);
+beeTex.reset();
+beeTex.camera(position.x, position.y, position.z,
+center.x, center.y, center.z,
+up.x, up.y, up.z);
+beeTex.push();
+beeTex.noStroke();
+beeTex.fill('#FFEB3B');
+// most models use positive y-coordinates
+beeTex.scale(1, -1);
+beeTex.scale(0.8);
+beeTex.model(bee);
+beeTex.pop();
+// 3-tiger graphics
+tigerTex.background(200);
+tigerTex.reset();
+tigerTex.camera(position.x, position.y, position.z,
+center.x, center.y, center.z,
+up.x, up.y, up.z);
+tigerTex.push();
+tigerTex.noStroke();
+tigerTex.fill('#9E9E9E');
+// most models use positive y-coordinates
+tigerTex.scale(1, -1);
+tigerTex.scale(0.8);
+tigerTex.model(tiger);
+tigerTex.pop();
+// 4-tree graphics
+treeTex.background(200);
+treeTex.reset();
+treeTex.camera(position.x, position.y, position.z,
+center.x, center.y, center.z,
+up.x, up.y, up.z);
+treeTex.push();
+treeTex.noStroke();
+treeTex.fill('#4CAF50');
+// most models use positive y-coordinates
+treeTex.scale(1, -1);
+treeTex.scale(0.8);
+treeTex.model(tree);
+treeTex.pop();
+// 5-penguin graphics
+penguinTex.background(200);
+penguinTex.reset();
+penguinTex.camera(position.x, position.y, position.z,
+center.x, center.y, center.z,
+up.x, up.y, up.z);
+penguinTex.push();
+penguinTex.noStroke();
+penguinTex.fill('#795548');
+// most models use positive y-coordinates
+penguinTex.scale(1, -1);
+penguinTex.scale(0.8);
+penguinTex.model(penguin);
+penguinTex.pop();
+// 6-crow graphics
+crowTex.background(200);
+crowTex.reset();
+crowTex.camera(position.x, position.y, position.z,
+center.x, center.y, center.z,
+up.x, up.y, up.z);
+crowTex.push();
+crowTex.noStroke();
+crowTex.fill('#673AB7');
+// most models use positive y-coordinates
+crowTex.scale(1, -1);
+crowTex.scale(0.8);
+crowTex.model(crow);
+crowTex.pop();
+// 7-tower graphics
+towerTex.background(200);
+towerTex.reset();
+towerTex.camera(position.x, position.y, position.z,
+center.x, center.y, center.z,
+up.x, up.y, up.z);
+towerTex.push();
+towerTex.noStroke();
+towerTex.fill('#FFC107');
+// most models use positive y-coordinates
+towerTex.scale(1, -1);
+towerTex.scale(0.8);// only bunny
+towerTex.model(tower);
+towerTex.pop();
+// 8-fish graphics
+fishTex.background(200);
+fishTex.reset();
+fishTex.camera(position.x, position.y, position.z,
+center.x, center.y, center.z,
+up.x, up.y, up.z);
+fishTex.push();
+fishTex.noStroke();
+fishTex.fill('#07FFE5');
+// most models use positive y-coordinates
+fishTex.scale(1, -1);
+fishTex.scale(0.8);// only bunny
+fishTex.model(fish);
+fishTex.pop();
+if (use == 1) {
+cube();
+} else if(use == 2) {
+pyramid();
+} else if(use == 3) {
+octahedron();
+}
+}
+function cube(){
+// 3. main canvas
+background(0);
+push();
+// front (+z)
+stroke('#FFC107');
+strokeWeight(5);
+texShader.setUniform('texture', crowTex);
+beginShape();
+vertex(-edge, -edge, +edge);
+vertex(+edge, -edge, +edge);
+vertex(+edge, +edge, +edge);
+vertex(-edge, +edge, +edge);
+endShape(CLOSE);
+// right (+x)
+texShader.setUniform('texture', fishTex);
+beginShape();
+vertex(+edge, -edge, +edge);
+vertex(+edge, -edge, -edge);
+vertex(+edge, +edge, -edge);
+vertex(+edge, +edge, +edge);
+endShape(CLOSE);
+// left (-x)
+texShader.setUniform('texture', penguinTex);
+beginShape();
+vertex(-edge, -edge, +edge);
+vertex(-edge, +edge, +edge);
+vertex(-edge, +edge, -edge);
+vertex(-edge, -edge, -edge);
+endShape(CLOSE);
+// back (-z)
+texShader.setUniform('texture', treeTex);
+beginShape();
+vertex(-edge, -edge, -edge);
+vertex(-edge, +edge, -edge);
+vertex(+edge, +edge, -edge);
+vertex(+edge, -edge, -edge);
+endShape(CLOSE);
+// bottom (+y)
+texShader.setUniform('texture', beeTex);
+beginShape();
+vertex(-edge, +edge, +edge);
+vertex(+edge, +edge, +edge);
+vertex(+edge, +edge, -edge);
+vertex(-edge, +edge, -edge);
+endShape(CLOSE);
+// top (-y)
+texShader.setUniform('texture', arrowTex);
+beginShape();
+vertex(-edge, -edge, +edge);
+vertex(+edge, -edge, +edge);
+vertex(+edge, -edge, -edge);
+vertex(-edge, -edge, -edge);
+endShape(CLOSE);
+pop();
+}
+function pyramid(){
+// 3. main canvas
+background(0);
+push();
+// front (+z)
+stroke('#FFC107');
+strokeWeight(5);
+texShader.setUniform('texture', crowTex);
+beginShape();
+vertex(-edge, +edge, +bedge);
+vertex(+edge, +edge, +bedge);
+vertex(0, -bedge, 0);
+endShape(CLOSE);
+// right (+x)
+texShader.setUniform('texture', fishTex);
+beginShape();
+vertex(+edge, +edge, +bedge);
+vertex(+edge, +edge, -bedge);
+vertex(0, -bedge, 0);
+endShape(CLOSE);
+// left (-x)
+texShader.setUniform('texture', penguinTex);
+beginShape();
+vertex(-edge, +edge, +bedge);
+vertex(-edge, +edge, -bedge);
+vertex(0, -bedge, 0);
+endShape(CLOSE);
+// back (-z)
+texShader.setUniform('texture', treeTex);
+beginShape();
+vertex(-edge, +edge, -bedge);
+vertex(+edge, +edge, -bedge);
+vertex(0, -bedge, 0);
+endShape(CLOSE);
+// bottom (+y)
+texShader.setUniform('texture', beeTex);
+beginShape();
+vertex(-edge, +edge, +bedge);
+vertex(+edge, +edge, +bedge);
+vertex(+edge, +edge, -bedge);
+vertex(-edge, +edge, -bedge);
+endShape(CLOSE);
+pop();
+}
+function octahedron(){
+// 3. main canvas
+background(0);
+push();
+// frontup (+z-y)
+stroke('#FFC107');
+strokeWeight(5);
+texShader.setUniform('texture', crowTex);
+beginShape();
+vertex(-oedge, 0, +oedge);
+vertex(+oedge, 0, +oedge);
+vertex(0, -oredge, 0);
+endShape(CLOSE);
+// rightup (+x-y)
+texShader.setUniform('texture', fishTex);
+beginShape();
+vertex(+oedge, 0, +oedge);
+vertex(+oedge, 0, -oedge);
+vertex(0, -oredge, 0);
+endShape(CLOSE);
+// leftup (-x-y)
+texShader.setUniform('texture', penguinTex);
+beginShape();
+vertex(-oedge, 0, +oedge);
+vertex(-oedge, 0, -oedge);
+vertex(0, -oredge, 0);
+endShape(CLOSE);
+// backup (-z-y)
+texShader.setUniform('texture', towerTex);
+beginShape();
+vertex(-oedge, 0, -oedge);
+vertex(+oedge, 0, -oedge);
+vertex(0, -oredge, 0);
+endShape(CLOSE);
+// frontdw (+z+y)
+strokeWeight(5);
+texShader.setUniform('texture', beeTex);
+beginShape();
+vertex(-oedge, 0, +oedge);
+vertex(+oedge, 0, +oedge);
+vertex(0, +oredge, 0);
+endShape(CLOSE);
+// rightdw (+x+y)
+texShader.setUniform('texture', tigerTex);
+beginShape();
+vertex(+oedge, 0, +oedge);
+vertex(+oedge, 0, -oedge);
+vertex(0, +oredge, 0);
+endShape(CLOSE);
+// leftdw (-x+y)
+texShader.setUniform('texture', treeTex);
+beginShape();
+vertex(-oedge, 0, +oedge);
+vertex(-oedge, 0, -oedge);
+vertex(0, +oredge, 0);
+endShape(CLOSE);
+// backdw (-z+y)
+texShader.setUniform('texture', arrowTex);
+beginShape();
+vertex(-oedge, 0, -oedge);
+vertex(+oedge, 0, -oedge);
+vertex(0, +oredge, 0);
+endShape(CLOSE);
+pop();
+}
+function showCube(){
+use = 1;
+}
+function showPyramid(){
+use = 2;
+}
+function showOctahedron(){
+use = 3;
+}</code></pre></div></details></article><footer class=book-footer><div class="flex flex-wrap justify-between"><div><a class="flex align-center" href=https://github.com/anfbalceroce/VisualComputing/commit/5c38e4ca36cce987eed7fa0ee5283786f367184f title='Last modified by JEPG | November 28, 2022' target=_blank rel=noopener><img src=/VisualComputing/svg/calendar.svg class=book-icon alt=Calendar>
+<span>November 28, 2022</span></a></div></div><script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents><ul><li><a href=#non-euclidean-geometry>Non-Euclidean geometry</a></li><li><a href=#marco-teórico>Marco teórico</a></li><li><a href=#ejercicio>Ejercicio</a></li></ul></nav></div></aside></main></body></html>
