@@ -16,7 +16,7 @@ varying vec4 position4;
 void main() {
 
   vec4 sum = vec4(0.0, 0.0, 0.0, 0.0);
-  for (int i = 0; i < 12; i++)
+  for (int i = 0; i < 3; i++)
   {
     if (i == lightCount) break;
     vec3 direction3 = vec3(uLightPosition[i*3], uLightPosition[i*3+1], uLightPosition[i*3+2]) - position4.xyz;
