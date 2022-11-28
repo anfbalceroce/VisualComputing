@@ -1,22 +1,4 @@
----
-title: Non-Euclidean geometry
-weight: 5
----
-
-# Non-Euclidean geometry
-
-# Marco teórico 
-
-# Ejercicio
-{{<details "Código">}}
-
-{{< p5-iframe sketch="/VisualComputing/sketches/Non_Euclid/non_euclidean.js" lib1="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.js"
-lib2="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/addons/p5.sound.min.js"
-lib3="https://freshfork.github.io/p5.EasyCam/p5.easycam.js"
-lib4="https://cdn.jsdelivr.net/gh/VisualComputing/p5.treegl/p5.treegl.js"
-width="550" height="550">}}
-
-``` let easycam;
+let easycam;
 let edge = 80;
 let button1, button2, button3;
 let use = 1;
@@ -458,5 +440,4 @@ function octahedron(){
   function showOctahedron(){
     use = 3;
   }
-```
-{{</details >}}
+
