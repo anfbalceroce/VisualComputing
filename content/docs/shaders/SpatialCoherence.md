@@ -1,6 +1,6 @@
 ---
 title: Spatial Coherence
-weight: 5
+weight: 6
 ---
 ## Exercise
 1. Implement your own source dataset and a mechanism to select different images from it.

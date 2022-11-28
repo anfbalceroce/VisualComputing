@@ -1,6 +1,6 @@
 ---
 title: Photomosaic
-weight: 6
+weight: 7
 ---
 ## Exercise
 Implement a mosaic (or/and ascii art) visual application.
