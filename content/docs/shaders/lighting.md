@@ -4,13 +4,13 @@ weight: 8
 ---
 # Lighting
 
-La iluminación en gráficos por computadora se refiere a la colocación de luces en una escena para lograr algún efecto deseado. Los paquetes de síntesis de imágenes y animación contienen diferentes tipos de luces que se pueden colocar en diferentes lugares y modificar cambiando los parámetros. Con demasiada frecuencia, las personas que crean imágenes o animaciones ignoran o ponen poco énfasis en la iluminación. []
+La iluminación en gráficos por computadora se refiere a la colocación de luces en una escena para lograr algún efecto deseado. Los paquetes de síntesis de imágenes y animación contienen diferentes tipos de luces que se pueden colocar en diferentes lugares y modificar cambiando los parámetros. Con demasiada frecuencia, las personas que crean imágenes o animaciones ignoran o ponen poco énfasis en la iluminación. [2]
 
-En gráficos por computadora, el efecto general de una fuente de luz sobre un objeto está determinado por la combinación de las interacciones del objeto con él, generalmente descritas por al menos tres componentes principales. Los tres componentes principales de iluminación (y los tipos de interacción subsiguientes) son difusos, ambientales y especulares. [] 
+En gráficos por computadora, el efecto general de una fuente de luz sobre un objeto está determinado por la combinación de las interacciones del objeto con él, generalmente descritas por al menos tres componentes principales. Los tres componentes principales de iluminación (y los tipos de interacción subsiguientes) son difusos, ambientales y especulares. [3]
 
 ## Luz ambiental
 
-Una luz ambiental proyecta suaves rayos de luz en todas las direcciones. No tienen una direccionalidad específica, por lo que no proyectan sombras y simula más una luz secundaria que proviene de todos los ángulos diferentes del objeto. La iluminación ambiental es una buena alternativa para rellenar áreas en un render que no tiene suficiente iluminación.
+Una luz ambiental proyecta suaves rayos de luz en todas las direcciones. No tienen una direccionalidad específica, por lo que no proyectan sombras y simula más una luz secundaria que proviene de todos los ángulos diferentes del objeto. La iluminación ambiental es una buena alternativa para rellenar áreas en un render que no tiene suficiente iluminación. [2]
 
 ># Ejercicio
 >Implemente una escena que haga uso de la siguiente ecuación de ilumincación donde ambient4 es el color de la luz ambiental. 
@@ -116,10 +116,33 @@ function draw() {
 ```
 {{</details >}}
 
-## Reflexión difusa
-La iluminación difusa (o reflexión difusa) es la iluminación directa de un objeto por una cantidad uniforme de luz que interactúa con una superficie que dispersa la luz.[4][9] Después de que la luz incide en un objeto, se refleja en función de las propiedades de la superficie del objeto, así como del ángulo de la luz entrante. Esta interacción es el principal contribuyente al brillo del objeto y constituye la base de su color.
+{{<details "Shader">}}
+``` frag
+precision mediump float;
+
+// emitted by p5 color-group commands
+// https://p5js.org/reference/#group-Color
+uniform vec4 uMaterialColor;
+uniform vec4 lightColor;
+uniform float ambient;
+
+void main() {
+  vec4 ambient4 = lightColor * ambient;
+  gl_FragColor = ambient4 * uMaterialColor;
+}
+```
+{{</details >}}
+
+
+## Reflexion especular
+
+Se refiere a los reflejos de los objetos reflectantes, como diamantes, bolas de billar y ojos. Los reflejos especulares a menudo aparecen como puntos brillantes en una superficie, en un punto donde la fuente de luz incide directamente. Ambient, Diffuse y Specular se denominan los tres componentes de una fuente de luz. [3]
+
+Una reflexión especular es visible solo donde la superficie normal está orientada precisamente a la mitad entre la dirección de la luz entrante y la dirección del espectador; esto se llama la dirección del medio ángulo porque biseca (divide en dos) el ángulo entre la luz entrante y el espectador. Por lo tanto, una superficie reflectora especular mostraría un punto culminante especular como la imagen reflejada perfectamente nítida de una fuente de luz. Sin embargo, muchos objetos brillantes muestran reflejos especulares borrosos.[4]
+
 ># Ejercicio
->Implementar una escena de sombreado de dibujos animados
+>Implementar una escena de sombreado de dibujos animados o Toon Shader apartir de la reflexion especular
+>
 {{< p5-iframe sketch="/VisualComputing/sketches/Lighting_2/sketch.js" lib1="https://cdn.jsdelivr.net/gh/VisualComputing/p5.treegl/p5.treegl.js" lib2="https://cdn.jsdelivr.net/gh/freshfork/p5.EasyCam@1.2.1/p5.easycam.js" width="550" height="550">}}
 
 
@@ -228,13 +251,80 @@ function draw() {
 ```
 {{</details >}}
 
-## Reflexion especular
+{{<details "Shader-frag">}}
+``` frag
+attribute vec3 aPosition;
+attribute vec3 aNormal;
+attribute vec2 aTexCoord;
+attribute vec4 aVertexColor;
 
-Se refiere a los reflejos de los objetos reflectantes, como diamantes, bolas de billar y ojos. Los reflejos especulares a menudo aparecen como puntos brillantes en una superficie, en un punto donde la fuente de luz incide directamente. Ambient, Diffuse y Specular se denominan los tres componentes de una fuente de luz.
+uniform mat4 uModelViewMatrix;
+uniform mat4 uProjectionMatrix;
+uniform mat3 uNormalMatrix;
 
-Una reflexión especular es visible solo donde la superficie normal está orientada precisamente a la mitad entre la dirección de la luz entrante y la dirección del espectador; esto se llama la dirección del medio ángulo porque biseca (divide en dos) el ángulo entre la luz entrante y el espectador. Por lo tanto, una superficie reflectora especular mostraría un punto culminante especular como la imagen reflejada perfectamente nítida de una fuente de luz. Sin embargo, muchos objetos brillantes muestran reflejos especulares borrosos.
+uniform int uDirectionalLightCount;
+uniform vec3 uLightingDirection;
+uniform vec3 uDirectionalColor;
+uniform vec4 uMaterialColor;
+
+varying vec4 vertColor;
+varying vec3 vertLightDir;
+varying vec3 vertNormal;
+varying vec2 vertTexCoord;
+
+void main() {
+  vec4 positionVec4 = vec4(aPosition, 1.0);
+  gl_Position = uProjectionMatrix * uModelViewMatrix * positionVec4;
+
+  vertNormal = normalize(uNormalMatrix * aNormal);
+  vertLightDir = -uLightingDirection;
+
+  vertColor = uMaterialColor;
+  vertTexCoord = aTexCoord;
+}
+```
+{{</details >}}
+
+{{<details "Shader-vert">}}
+``` frag
+#ifdef GL_ES
+precision mediump float;
+precision mediump int;
+#endif
+
+uniform float fraction;
+uniform vec4 lightColor;
+uniform float ambient;
+varying vec4 vertColor;
+varying vec3 vertNormal;
+varying vec3 vertLightDir;
+varying highp vec2 vertTexCoord;
+
+void main() {
+  float intensity;
+  vec4 color;
+  intensity = max(0.0, dot(vertLightDir, vertNormal));
+
+  if (intensity > pow(0.95, fraction)) {
+    color = vec4(vec3(1.0), 1.0);
+  } else if (intensity > pow(0.5, fraction)) {
+    color = vec4(vec3(0.6), 1.0);
+  } else if (intensity > pow(0.25, fraction)) {
+    color = vec4(vec3(0.4), 1.0);
+  } else {
+    color = vec4(vec3(0.2), 1.0);
+  }
+  gl_FragColor = color * vertColor * lightColor;
+}
+```
+{{</details >}}
+
+## Reflexión difusa
+
+La iluminación difusa (o reflexión difusa) es la iluminación directa de un objeto por una cantidad uniforme de luz que interactúa con una superficie que dispersa la luz.Después de que la luz incide en un objeto, se refleja en función de las propiedades de la superficie del objeto, así como del ángulo de la luz entrante. Esta interacción es el principal contribuyente al brillo del objeto y constituye la base de su color. [2]
+
 ># Ejercicio
->Implemente una escena de reflexión especular|difusa:
+>Implemente una escena de reflexión difusa:
 {{< p5-iframe sketch="/VisualComputing/sketches/Lighting_3/sketch.js" lib1="https://cdn.jsdelivr.net/gh/VisualComputing/p5.treegl/p5.treegl.js" lib2="https://cdn.jsdelivr.net/gh/freshfork/p5.EasyCam@1.2.1/p5.easycam.js" width="550" height="550">}}
 
 {{<details "Código">}}
@@ -372,19 +462,35 @@ function updatePointLight() {
 ```
 {{</details >}}
 
+{{<details "shader">}}
+``` frag
+precision mediump float;
+
+uniform float ambient;
+uniform vec4 uMaterialColor;
+uniform vec4 lightColor;
+// uLightPosition is given in eye space
+uniform vec3 uLightPosition;
+// both, normal3 and position4 are given in eye space as well
+varying vec3 normal3;
+varying vec4 position4;
+
+void main() {
+  vec3 direction3 = uLightPosition - position4.xyz;
+  // solve the diffuse light equation discarding negative values
+  // see: https://thebookofshaders.com/glossary/?search=max
+  // see: https://thebookofshaders.com/glossary/?search=dot
+  float diffuse = max(0.0, dot(normalize(direction3), normalize(normal3)));
+  gl_FragColor = (ambient + diffuse) * uMaterialColor * lightColor;
+}
+```
+{{</details >}}
+
 {{< p5-iframe sketch="/VisualComputing/sketches/Lighting_4/sketch.js" lib1="https://cdn.jsdelivr.net/gh/VisualComputing/p5.treegl/p5.treegl.js" lib2="https://cdn.jsdelivr.net/gh/freshfork/p5.EasyCam@1.2.1/p5.easycam.js" width="550" height="550">}}
-
-
-## Conclusiones
-
-* 
-*
-*
-*
 
 ## Referencias
 
-* "Lighting in 3D Graphics". www.bcchang.com. Retrieved 2019-11-05.
-* "Computer Graphics: Shading and Lighting". cglearn.codelight.eu. Retrieved 2019-10-30.
-* "Lighting in 3D Graphics". www.bcchang.com. Retrieved 2019-11-05.
-* Pollard, Nancy (Spring 2004). "Lighting and Shading" (PDF).
+* 1) "ToonShader", 2017 jwdunn1, P5js Editor Web
+* 2) "Computer Graphics: Shading and Lighting". cglearn.codelight.eu. Retrieved 2019-10-30.
+* 3) "Lighting in 3D Graphics". www.bcchang.com. Retrieved 2019-11-05.
+* 4) "Lighting and Shading" (PDF) Pollard, Nancy (Spring 2004).
