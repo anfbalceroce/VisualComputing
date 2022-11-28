@@ -39,7 +39,7 @@ function preload() {
   
 
 function setup() {
-  createCanvas(400, 400, WEBGL);
+  createCanvas(550, 550, WEBGL);
   // no need to normalize the texture
   // textureMode(NORMAL);
   
