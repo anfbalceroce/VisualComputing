@@ -57,7 +57,7 @@ function setup() {
       img.hide();
       img.pause();
     }
-    photomosaicShader.setUniform('source', img);
+    pixelatorShader.setUniform('source', img);
   })
 
 }

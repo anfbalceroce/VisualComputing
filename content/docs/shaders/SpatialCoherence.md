@@ -28,7 +28,7 @@ La implementación sin coherencia espacial no acepta videos, por lo que solo pod
 
 {{< p5-iframe sketch="/VisualComputing/sketches/shaders/SpatialCoherence/scoherence.js" width="650" height="750" lib1="https://cdn.jsdelivr.net/gh/VisualComputing/p5.treegl/p5.treegl.js">}}
 
-## Dataset
+{{<details "Dataset">}}
 
 <img src="/VisualComputing/docs/shaders/resources/dataset/1.jpg" alt="1" width="150"/>
 <img src="/VisualComputing/docs/shaders/resources/dataset/2.jpg" alt="2" width="150"/>
@@ -60,6 +60,8 @@ La implementación sin coherencia espacial no acepta videos, por lo que solo pod
 <img src="/VisualComputing/docs/shaders/resources/dataset/28.jpg" alt="28" width="150"/>
 <img src="/VisualComputing/docs/shaders/resources/dataset/29.jpg" alt="29" width="150"/>
 <img src="/VisualComputing/docs/shaders/resources/dataset/30.jpg" alt="30" width="150"/>
+
+{{</details >}}
 
 {{<details "Sketch Code">}}
 

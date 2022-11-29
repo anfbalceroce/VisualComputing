@@ -7,7 +7,168 @@ Implement a mosaic (or/and ascii art) visual application.
 
 ## Images Photomosaic
 
-En esta aplicación, se usa el mismo mecanismo de pixelación visto en **Spatial Coherence** con la diferencia de que cada pixel de baja resolución es mapeado a una imagen. El shader recibe una imagen que contiene todas las imágenees del dataset que compondrán el mosaico. Estas imágenes están ordenadas siguiendo alguna métrica, que en nuestro caso es el luma. El shader calcula el color del pixel de baja resolución para texel. A ese color le calcula el luma. Este luma obtenido le indica a la función **texture2D**, qué tanto se debe desplazar horizontalmente hacia la derecha desde el extremo izquierdo para obtener así la coordenada x de la imagen que se quiere dibujar en esa sección (es decir, dónde empieza la imagen en el buffer recibido). 
+En esta aplicación, se usa el mismo mecanismo de pixelación visto en **Spatial Coherence** con la diferencia de que cada pixel de baja resolución es mapeado a una imagen. El shader recibe una imagen (buffer) que contiene todas las imágenes del dataset que compondrán el mosaico. Estas imágenes están ordenadas siguiendo alguna métrica, que en nuestro caso es el luma. El shader obtiene el color del pixel de baja resolución para cada texel y a ese color le calcula el luma. Con el luma, se hace el mapeo correspondiente en el buffer.
+
+## Explicación
+
+La coordenada **stepCoord** mapea la coordenada de cada texel a su coordenada entera usando la función piso.
+Por ejemplo, todos los texeles dentro del espacio [2.0, 3.0) X [2.0, 3.0] son mapeados a la coordenada (2, 2).
+El texel en la coordenada mapeada, en este caso (2, 2) tiene un color. Ese color se asigna a todos los texeles que fueron mapeados. Ese es el mecanismo de pixelación usado, que aplica el concepto de coherencia espacial, pues no nos interesa qué color es, solo confiamos que será coherente con su espacio al rededor.
+
+Las n imágenes del dataset son recibidas en el shader como una única imagen. Estas imágenes están ordenadas horizontalmente, una siguiendo a la otra. Podemos imaginar el buffer como un arreglo de dimensión **1 x n**. El shader llama a este buffer **palette** o paleta.
+
+La coordenada **symbolCoord** indica de qué color se debe pintar cada texel en la textura de salida para que vaya dibujando los símbolos del mosaico, es decir las imágenes, correctamente. 
+
+Si se usa esta coordenada **symbolCoord**, cada símbolo será el buffer (paleta) completo:
+
+{{<details "Symbol = Palette">}}
+  ![Each symbol is the whole palette (buffer)](/VisualComputing/docs/shaders/resources/ss0.png)
+{{</details >}}
+
+{{<details "Code: Symbol = Palette">}}
+```glsl
+    // i. define symbolCoord as a texcoords2 remapping in [0.0, resolution] ∈ R
+    vec2 symbolCoord = texcoords2 * resolution;
+    // ii. define stepCoord as a symbolCoord remapping in [0.0, resolution] ∈ Z
+    vec2 stepCoord = floor(symbolCoord);
+    // iii. remap symbolCoord to [0.0, 1.0] ∈ R
+    symbolCoord = symbolCoord - stepCoord;
+    // remap stepCoord to [0.0, 1.0] ∈ R
+    stepCoord = stepCoord / vec2(resolution);
+
+    // stepCoord is the coordinate of our key, we get its color: key color
+    vec4 key = texture2D(source, stepCoord); // texel will be the key to look up
+
+    // using symbolcoord draws the whole pallete in each low resolution pixel
+    vec4 paletteTexel = texture2D(palette, symbolCoord);
+
+    gl_FragColor = keys ? key : paletteTexel;
+```
+{{</details >}}
+
+Es necesario hacer el siguiente mapeo sobre la componente horizontal de la coordenada **symbolCoord**.
+
+{{< katex display>}}
+
+\lbrack 0 .. 1 \rbrack \to \lbrack 0 .. 1/n \rbrack \\
+symbolCoord.x \to symbolCoord.x / n
+
+{{< /katex >}}
+
+Donde **n** es el número de imagenes en el dataset y **1/n** es la longitud horizontal de cada imagen en la paleta.
+De manera que si **n = 30**, la longitud de cada imagen es **1/n = 0.033..**
+
+Si se usa **symbolCoord.x/n** para dibujar, cada símbolo contendrá los pixeles ubicados en el espacio [0, 1/n] X [0, 1] = [0, 0.033] X [0, 1] de la paleta, y eso corresponde a la primera imagen. Como el ordenamiento es por luma ascendente, la primera imagen es la más oscura.
+
+{{<details "Symbol = First Image in Palette">}}
+  ![Each symbol is the whole palette (buffer)](/VisualComputing/docs/shaders/resources/ss1.png)
+{{</details >}}
+
+{{<details "Code: Symbol = First Image in Palette">}}
+```glsl
+    // i. define symbolCoord as a texcoords2 remapping in [0.0, resolution] ∈ R
+    vec2 symbolCoord = texcoords2 * resolution;
+    // ii. define stepCoord as a symbolCoord remapping in [0.0, resolution] ∈ Z
+    vec2 stepCoord = floor(symbolCoord);
+    // iii. remap symbolCoord to [0.0, 1.0] ∈ R
+    symbolCoord = symbolCoord - stepCoord;
+    // remap stepCoord to [0.0, 1.0] ∈ R
+    stepCoord = stepCoord / vec2(resolution);
+
+    // stepCoord is the coordinate of our key, we get its color: key color
+    vec4 key = texture2D(source, stepCoord); // texel will be the key to look up
+
+    // using symbolcoord / n maps [0.0, 1.0] ∈ R --> [0.0, 1.0 / n] ∈ R : if n = 30 then [0.0, 0.033] ∈ R
+    // 1.0 / n is the horizontal length of each image, so each draws one image, the first image in the pallete (darkest one if ordered by luma asc)
+    vec4 paletteTexel = texture2D(palette, vec2(symbolCoord.x / n, symbolCoord.y));
+
+    gl_FragColor = keys ? key : paletteTexel;
+```
+{{</details >}}
+
+Ahora, es necesario garantizar que con cada cada símbolo que se pinta tenga un luma coherente, de manera que el mosaico pinte la imagen que se quiere pintar. Para esto, se debe calcular el luma del color key. A este luma le llamamos **kluma**. Esta variable nos permitirá buscar la coordenada horizontal correcta en la paleta, desde la cual se debe empezar a pintar. El valor de **kluma** está en [0.0, 1.0] ∈ R, pues los colores están normalizados. La coordenada vertical no tiene problema pues la dimensión del buffer es **1 x n** por lo que no hay ambiguedad en decidir qué imagen se pinta verticalmente (siempre es una, y esa es la que es).
+
+Para encontrar esta coordenada, se calcula la cantidad de desplazamiento horizontal hacia la derecha que se debe hacer desde la coordenada **x = 0.0**. Para esto, podemos definir la siguiente función que llamaremos **nfloor**.
+
+{{< katex display>}}
+
+nfloor(x, n) : \text{Función que toma como entrada un número real x y un entero positivo n y produce como salida} \\
+\text{el múltiplo de 1/n más grande que sea menor o igual a x.}
+
+{{< /katex >}}
+
+A continuación la implementación en GLSL:
+
+{{<details "nfloor">}}
+```glsl
+// nfloor is a function that gets the greatest multiple of 1.0 / n less than or equal to x
+float nfloor(float x, float n) { // ex: x = 0.086, n = 30
+  float a = 1.0 / n; // 1.0 / 30 = 0.033.. : a is inverse of n
+  float b = x / a; //  0.086 / 0.033 = 2.606.. : b in [0.0, n] ∈ R, c in [0, n] ∈ Z
+  float c = floor(b); // floor(2.606..) = 2 : integer part of b indicates how many images we must ignore from left to right
+  float d = a * c; // 0.033 * 2 = 0.066.. : d is the horizontal coordinate from which we can start drawing
+  return d; // d in [0.0, 1.0] ∈ R but has a finite size n: [0 * 1/n, 1 * 1/n, 2 * 1/n, ..., n-1 * 1/n = 1 - 1/n]
+}
+```
+{{</details >}}
+
+Recordando que **1/n** es la longitud de cada imagen en la paleta, si se **x = kluma** entonces la función **nfloor** nos da como resultado la coordenada horizontal en la que empieza la imagen con el luma más grande menor o igual a **kluma**. De esta manera se garantiza que se obtiene una coordenada de una imagen con un luma coherente, y que además esta coordenada marca el inicio de la imagen, por lo que se va a poder dibujar correctamente dentro del símbolo.
+
+El rango de la función nfloor es discreto y su tamaño es **n**:
+
+{{< katex display>}}
+
+(x, n) \to nfloor(x, n) \\
+[1 .. 0] \times \N \to [0, 1 \cdot 1/n, 2 \cdot 1/n, ..., 1 - (1/n)] 
+
+{{< /katex >}}
+
+Por ejemplo, si **n = 30**, el rango es: **[0, 0.033, 0.066, ..., 0.967, 1]** y su tamaño es **30**.
+
+A este desplazamiento obtenido con la función **nfloor** finalmente se le suma el mapeo **symbolCoord.x/n**, de manera que la imagen se pinte correctamente. Cuando el desplazamiento es cero, se pinta la primera imagen del dataset, pero si es 0.033, entonces se pinta la segunda imagen, y así sucesivamente, de manera que siempre se pinta una imagen coherente y correctamente. Ahora si, cada símbolo es la imagen con un luma coherente y cercano al **kluma** de cada pixel de baja resolución usado en el pixelado.
+
+
+{{<details "Symbol = Image with Coherent Luma">}}
+  ![Each symbol is the whole palette (buffer)](/VisualComputing/docs/shaders/resources/ss2.png)
+{{</details >}}
+
+{{<details "Code: Symbol = Image with Coherent Luma">}}
+```glsl
+    // i. define symbolCoord as a texcoords2 remapping in [0.0, resolution] ∈ R
+    vec2 symbolCoord = texcoords2 * resolution;
+    // ii. define stepCoord as a symbolCoord remapping in [0.0, resolution] ∈ Z
+    vec2 stepCoord = floor(symbolCoord);
+    // iii. remap symbolCoord to [0.0, 1.0] ∈ R
+    symbolCoord = symbolCoord - stepCoord;
+    // remap stepCoord to [0.0, 1.0] ∈ R
+    stepCoord = stepCoord / vec2(resolution);
+    // stepCoord is the coordinate of our key, we get its color: key color
+    vec4 key = texture2D(source, stepCoord); // texel will be the key to look up
+    // we calculate the luma of key color: kluma in [0.0, 1.0] ∈ R
+
+    float kluma = luma(key.rgb);
+    // we calculate horizontal displacement to the right needed to start drawing an image with a luma close to kluma
+    // nfloor is a function that gets the greatest multiple of 1.0 / n less than or equal to x (kluma)
+    float displacement = nfloor(kluma, n);
+
+    // using symbolcoord draws the whole pallete in each low resolution pixel
+    // vec4 paletteTexel = texture2D(palette, symbolCoord);
+
+    // using symbolcoord / n maps [0.0, 1.0] ∈ R --> [0.0, 1.0 / n] ∈ R : if n = 30 then [0.0, 0.033] ∈ R
+    // 1.0 / n is the horizontal length of each image, so each draws one image, the first image in the pallete (darkest one if ordered by luma asc)
+    // vec4 paletteTexel = texture2D(palette, vec2(symbolCoord.x / n, symbolCoord.y));
+
+    // we need the displacement to start drawing the correct image each time: the correct image is the one with the luma closest to the key luma
+    // displacement is in [0.0, 1.0] ∈ R with finite size n: [0 * 1/n, 1 * 1/n, 2 * 1/n, ..., n-1 * 1/n = 1 - 1/n]
+    // [0.0, 0.033, 0.066, ..., 0.967] if n = 30
+    // if 0.0, it draws first image, if 0.033, it draws second image, ..., if 0.967 it draws 30th image
+    vec4 paletteTexel = texture2D(palette, vec2(displacement + symbolCoord.x / n, symbolCoord.y));
+
+    gl_FragColor = keys ? key : paletteTexel;
+```
+{{</details >}}
+
+Debe tenerse en cuenta que el luma de la imagen que se usa como símbolo puede no ser el más cercano, pues se está usando la función piso. Puede que para algunos casos, haya una imagen por encima que tenga un luma más cercano. Por ejemplo, si **kluma = 0.098** el desplazamiento dará como resultado **d = 0.066**, que corresponde a la tercera imagen. Nada garantiza que la diferencia entre el luma de la tercera imagen y el **kluma** sea menor que la diferencia entre el luma de la cuarta imagen y el **kluma**. Para ese pixel en particular hubiera funcionado mejor una función **nceil** por ejemplo. Tal vez una mejor implementación pueda enviar al shader un arreglo con los lumas de las n imágenes, y hacer que para cada símbolo se valide cuál diferencia de luma es menor, si la obtenida con **nfloor** o la de la imagen siguiente (obtenida sumando **1/n** sin tener que usar **nceil**), y usar el desplazamiento correspondiente a la hora de pintar el pixel. 
 
 ### Controles
 
@@ -19,7 +180,7 @@ En esta aplicación, se usa el mismo mecanismo de pixelación visto en **Spatial
 
 {{< p5-iframe sketch="/VisualComputing/sketches/shaders/Photomosaic/photomosaic.js" width="650" height="750" lib1="https://cdn.jsdelivr.net/gh/VisualComputing/p5.treegl/p5.treegl.js" lib2="https://cdn.jsdelivr.net/gh/objetos/p5.quadrille.js/p5.quadrille.js">}}
 
-## Dataset
+{{<details "Dataset">}}
 
 <img src="/VisualComputing/docs/shaders/resources/dataset/1.jpg" alt="1" width="150"/>
 <img src="/VisualComputing/docs/shaders/resources/dataset/2.jpg" alt="2" width="150"/>
@@ -51,6 +212,8 @@ En esta aplicación, se usa el mismo mecanismo de pixelación visto en **Spatial
 <img src="/VisualComputing/docs/shaders/resources/dataset/28.jpg" alt="28" width="150"/>
 <img src="/VisualComputing/docs/shaders/resources/dataset/29.jpg" alt="29" width="150"/>
 <img src="/VisualComputing/docs/shaders/resources/dataset/30.jpg" alt="30" width="150"/>
+
+{{</details >}}
 
 {{<details "Sketch Code">}}
 

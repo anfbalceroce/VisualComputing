@@ -111,7 +111,7 @@ function setup() {
       img.hide();
       img.pause();
     }
-    blendShader.setUniform('texture', img);
+    brightnessShader.setUniform('texture', img);
     tintingShader.setUniform('texture', img);
   })
 
