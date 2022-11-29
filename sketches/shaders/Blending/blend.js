@@ -62,6 +62,7 @@ function setup() {
     if (video_on.checked()) {
       img = createVideo(['/VisualComputing/docs/shaders/resources/video0.mp4']);
       img.hide();
+      img.loop();
     } else {
       img = loadImage('/VisualComputing/docs/shaders/resources/image.jpg');
       img.hide();     
