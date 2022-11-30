@@ -123,7 +123,7 @@ El rango de la función nfloor es discreto y su tamaño es **n**:
 
 {{< /katex >}}
 
-Por ejemplo, si **n = 30**, el rango es: **[0, 0.033, 0.066, ..., 0.967, 1]** y su tamaño es **30**.
+Por ejemplo, si **n = 30**, el rango es: **[0, 0.033, 0.066, ..., 0.967]** y su tamaño es **30**.
 
 A este desplazamiento obtenido con la función **nfloor** finalmente se le suma el mapeo **symbolCoord.x/n**, de manera que la imagen se pinte correctamente. Cuando el desplazamiento es cero, se pinta la primera imagen del dataset, pero si es 0.033, entonces se pinta la segunda imagen, y así sucesivamente, de manera que siempre se pinta una imagen coherente y correctamente. Ahora si, cada símbolo es la imagen con un luma coherente y cercano al **kluma** de cada pixel de baja resolución usado en el pixelado.
 
