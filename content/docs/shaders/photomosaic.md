@@ -402,6 +402,8 @@ void main() {
 
 Para el de imágenes, se disminuyó el tamaño de los caracteres a 4pt y su interlineado para poder visualizar la imagen en un espacio más pequeño.
 
+Estas implementaciones fueron tomadas de: [Coding Challenge 166: ASCII Text Images (The Coding Train)](https://www.youtube.com/watch?v=55iwMYv8tGI&t=1113s)
+
 <iframe src="/VisualComputing/sketches/shaders/Photomosaic/videoASCII.html" style="border:none;width:1200px;height:1000px;"></iframe>
 
 {{<details "Sketch Code">}}
